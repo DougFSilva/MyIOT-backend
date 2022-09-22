@@ -1,4 +1,4 @@
-package br.com.MyIot.model.user;
+package br.com.MyIot.model.user.password;
 
 public interface PasswordEncoder {
 
