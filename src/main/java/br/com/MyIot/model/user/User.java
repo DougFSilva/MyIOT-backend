@@ -1,9 +1,15 @@
 package br.com.MyIot.model.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class User {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class User implements UserDetails{
+
+	private static final long serialVersionUID = 1L;
 
 	private String id;
 
@@ -19,10 +25,10 @@ public class User {
 
 	private List<Profile> profiles = new ArrayList<>();
 
-	public User(String id, Email email, String name, String password, String clientMqttPassword,
+	public User(String id, String emailAddress, String name, String password, String clientMqttPassword,
 			List<Profile> profiles) {
 		this.id = id;
-		this.email = email;
+		setEmail(emailAddress);
 		this.name = name;
 		this.password = password;
 		this.clientMqttPassword = clientMqttPassword;
@@ -30,8 +36,8 @@ public class User {
 		this.profiles = profiles;
 	}
 
-	public User(Email email, String name, String password, List<Profile> profiles) {
-		this.email = email;
+	public User(String emailAddress, String name, String password, List<Profile> profiles) {
+		setEmail(emailAddress);
 		this.name = name;
 		this.password = password;
 		this.approvedRegistration = false;
@@ -50,14 +56,14 @@ public class User {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = new Email(email);
+	public void setEmail(String address) {
+		this.email = new Email(address);
 	}
 
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -99,6 +105,36 @@ public class User {
 		return "User [id=" + id + ", email=" + email + ", name=" + name + ", password=" + password
 				+ ", clientMqttPassword=" + clientMqttPassword + ", approvedRegistration=" + approvedRegistration
 				+ ", profiles=" + profiles + "]";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return profiles;
+	}
+
+	@Override
+	public String getUsername() {
+		return email.getAddress();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 
 }

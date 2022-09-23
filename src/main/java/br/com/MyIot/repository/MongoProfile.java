@@ -1,18 +1,20 @@
-package br.com.MyIot.model.user;
+package br.com.MyIot.repository;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public class Profile implements GrantedAuthority {
+import br.com.MyIot.model.user.ProfileType;
+
+public class MongoProfile implements GrantedAuthority{
 
 	private static final long serialVersionUID = 1L;
 	
 	private ProfileType type;
 
-	public Profile() {
+	public MongoProfile() {
 		super();
 	}
 
-	public Profile(ProfileType type) {
+	public MongoProfile(ProfileType type) {
 		this.type = type;
 	}
 
