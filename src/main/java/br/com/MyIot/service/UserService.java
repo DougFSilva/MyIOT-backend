@@ -94,11 +94,10 @@ public class UserService {
 	}
 
 	public UserDto findByIdDto(String id) {
-		User user = findById(id);
-		return new UserDto(user);
+		return new UserDto(findById(id));
 	}
 
-	private User findById(String id) {
+	public User findById(String id) {
 		Optional<User> user = repository.findById(id);
 		return user.orElseThrow(() -> new ObjectNotFoundException("User with id " + id + " not found in database!"));
 	}
@@ -112,13 +111,13 @@ public class UserService {
 	}
 
 	public List<UserDto> findAll() {
-		List<User> users = repository.findAll();
-		return users.stream().map(user -> new UserDto(user)).collect(Collectors.toList());
+		return repository.findAll().stream().map(user -> new UserDto(user)).toList();
 	}
 
 	public UserDto setApproveRegistration(String id, boolean approved) {
 		User user = findById(id);
 		user.setApprovedRegistration(approved);
-		return new UserDto(user);
+		User updatedUser = repository.setApproveRegistration(user, approved);
+		return new UserDto(updatedUser);
 	}
 }

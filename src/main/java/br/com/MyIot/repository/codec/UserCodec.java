@@ -1,7 +1,6 @@
 package br.com.MyIot.repository.codec;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bson.BsonReader;
 import org.bson.BsonString;
@@ -27,10 +26,11 @@ public class UserCodec implements CollectibleCodec<MongoUserEntity> {
 
 	@Override
 	public void encode(BsonWriter writer, MongoUserEntity entity, EncoderContext encoderContext) {
-		List<Document> profilesDocuments = entity.getProfiles().stream()
+		List<Document> profilesDocuments = entity.getProfiles()
+				.stream()
 				.map(profile -> new Document("type", profile.getType().getDescription()).append("authority",
 						profile.getAuthority()))
-				.collect(Collectors.toList());
+				.toList();
 		Document document = new Document();
 		document.append("_id", entity.getId())
 				.append("email", entity.getEmail())
@@ -52,9 +52,10 @@ public class UserCodec implements CollectibleCodec<MongoUserEntity> {
 	public MongoUserEntity decode(BsonReader reader, DecoderContext decoderContext) {
 		Document document = codec.decode(reader, decoderContext);
 		List<Document> mongoProfileDocuments = document.getList("profiles", Document.class);
-		List<MongoProfile> mongoProfiles = mongoProfileDocuments.stream()
+		List<MongoProfile> mongoProfiles = mongoProfileDocuments
+				.stream()
 				.map(profileDocument -> new MongoProfile(ProfileType.toEnum(profileDocument.getString("type"))))
-				.collect(Collectors.toList());
+				.toList();
 		return new MongoUserEntity(document.getObjectId("_id"), 
 								   document.getString("email"), 
 								   document.getString("name"),

@@ -1,7 +1,6 @@
 package br.com.MyIot.repository.converter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,10 @@ public class MongoUserConverter {
 		String id = entity.getId().toHexString();
 		String email = entity.getEmail();
 		String password = entity.getPassword();
-		List<Profile> profiles = entity.getProfiles().stream()
-				.map(mongoProfile -> new MongoProfileConverter().toProfile(mongoProfile)).collect(Collectors.toList());
+		List<Profile> profiles = entity.getProfiles()
+				.stream()
+				.map(mongoProfile -> new MongoProfileConverter().toProfile(mongoProfile))
+				.toList();
 		User user = new User(email , entity.getName(), password, profiles);
 		user.setId(id);
 		user.setApprovedRegistration(entity.isApporvedRegistration());
@@ -37,7 +38,7 @@ public class MongoUserConverter {
 		List<MongoProfile> mongoProfiles = user.getProfiles()
 				.stream()
 				.map(profile -> new MongoProfileConverter().toMongoProfile(profile))
-				.collect(Collectors.toList());
+				.toList();
 		MongoUserEntity mongoUserEntity = new MongoUserEntity(id, email, user.getName(), password,
 				user.getClientMqttPassword(), user.isApprovedRegistration(), mongoProfiles);
 		return mongoUserEntity;

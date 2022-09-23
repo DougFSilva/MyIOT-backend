@@ -2,7 +2,6 @@ package br.com.MyIot.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
@@ -43,7 +42,7 @@ public class UserForm {
 
 	public User toUser() {
 		List<Profile> profiles = this.profiles.stream().map(profile -> new Profile(ProfileType.toEnum(profile)))
-				.collect(Collectors.toList());
+				.toList();
 		return new User(email, name, password, profiles);
 	}
 

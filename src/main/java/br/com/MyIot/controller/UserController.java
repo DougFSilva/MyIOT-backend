@@ -67,7 +67,7 @@ public class UserController {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 
-	@PutMapping(value = "/id={id}/approved={approved}")
+	@PutMapping(value = "/approve-registration/id={id}/{approved}")
 	public ResponseEntity<UserDto> setApprovedRegistration(@PathVariable String id, @PathVariable boolean approved) {
 		return ResponseEntity.ok().body(service.setApproveRegistration(id, approved));
 	}
