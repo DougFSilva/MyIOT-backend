@@ -9,9 +9,9 @@ public interface MeasuredValueRepository {
 	
 	void deleteById(MeasuringDevice device, String id);
 
-	void deleteByTimeRange(MeasuringDevice device, LocalDateTime initialDateTime, LocalDateTime finalDateTime);
-
 	void deleteAllByDevice(MeasuringDevice device);
+	
+	void deleteByTimeRange(MeasuringDevice device, LocalDateTime initialDateTime, LocalDateTime finalDateTime);
 
 	List<MeasuredValue> findAllByDevice(MeasuringDevice device);
 

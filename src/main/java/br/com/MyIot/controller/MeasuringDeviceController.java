@@ -43,7 +43,7 @@ public class MeasuringDeviceController {
 	@DeleteMapping(value = "/user-id={userId}")
 	public ResponseEntity<String> deleteAllByUserId(@PathVariable String userId) {
 		service.deleteAllByUser(userId);
-		return ResponseEntity.ok().body("Delete Devices of user with id " + userId);
+		return ResponseEntity.ok().body("Deleted Devices of user with id " + userId);
 	}
 
 	@PutMapping(value = "/id={id}")

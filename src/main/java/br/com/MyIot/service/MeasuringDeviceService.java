@@ -81,5 +81,5 @@ public class MeasuringDeviceService {
 	public List<MeasuringDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new MeasuringDeviceDto(device)).toList();
 	}
-
+	
 }

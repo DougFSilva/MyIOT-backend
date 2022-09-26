@@ -11,6 +11,10 @@ public class MeasuredValueForm {
 
 	private LocalDateTime timestamp;
 	
+	public MeasuredValueForm() {
+		super();
+	}
+	
 	public MeasuredValueForm(String deviceId, List<Double> values, LocalDateTime timestamp) {
 		this.deviceId = deviceId;
 		this.values = values;
@@ -20,6 +24,7 @@ public class MeasuredValueForm {
 	public MeasuredValueForm(String deviceId, List<Double> values) {
 		this.deviceId = deviceId;
 		this.values = values;
+		this.timestamp = LocalDateTime.now();
 	}
 
 	public String getDeviceId() {

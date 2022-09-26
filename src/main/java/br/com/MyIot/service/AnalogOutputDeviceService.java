@@ -77,7 +77,7 @@ public class AnalogOutputDeviceService {
 		User user = userService.findById(userId);
 		return repository.findAllByUser(user).stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
 	}
-
+	
 	public List<AnalogOutputDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
 	}
