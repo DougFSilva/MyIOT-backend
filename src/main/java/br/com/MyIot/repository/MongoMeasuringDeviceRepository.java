@@ -147,7 +147,7 @@ public class MongoMeasuringDeviceRepository implements MeasuringDeviceRepository
 
 	private void createCollection(String collectionName) {
 		mongoConnection.connect().getDatabase()
-			.createCollection(collectionName,new CreateCollectionOptions()
+			.createCollection("device_" + collectionName,new CreateCollectionOptions()
 					.capped(true)
 					.sizeInBytes(5000000)
 					.maxDocuments(20000));
