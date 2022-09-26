@@ -3,7 +3,6 @@ package br.com.MyIot.model.device;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.MyIot.dto.DiscreteDeviceDto;
 import br.com.MyIot.model.user.User;
 
 public interface DiscreteDeviceRepository {
@@ -20,7 +19,7 @@ public interface DiscreteDeviceRepository {
 
 	List<DiscreteDevice> findAllByUser(User user);
 
-	List<DiscreteDeviceDto> findAll();
+	List<DiscreteDevice> findAll();
 
 	Integer countDevicesByUser(User user);
 

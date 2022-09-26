@@ -6,21 +6,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.MyIot.dto.AnalogOutputDeviceDto;
-import br.com.MyIot.dto.AnalogOutputDeviceForm;
+import br.com.MyIot.dto.DiscreteDeviceDto;
+import br.com.MyIot.dto.DiscreteDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
 import br.com.MyIot.exception.UserNotApprovedException;
-import br.com.MyIot.model.device.AnalogOutputDevice;
-import br.com.MyIot.model.device.AnalogOutputDeviceRepository;
 import br.com.MyIot.model.device.DevicesPerUserValidate;
+import br.com.MyIot.model.device.DiscreteDevice;
+import br.com.MyIot.model.device.DiscreteDeviceRepository;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
 
 @Service
-public class AnalogOutputDeviceService {
+public class DiscreteDeviceService {
 
 	@Autowired
-	private AnalogOutputDeviceRepository repository;
+	private DiscreteDeviceRepository repository;
 
 	@Autowired
 	private UserService userService;
@@ -28,7 +28,7 @@ public class AnalogOutputDeviceService {
 	@Autowired
 	private MqttDeviceRoleService mqttDeviceRoleService;
 
-	public String create(AnalogOutputDeviceForm form) {
+	public String create(DiscreteDeviceForm form) {
 		User user = userService.findById(form.getUserId());
 		if (!user.isApprovedRegistration()) {
 			throw new UserNotApprovedException("User " + user.getName() + " not approved!");
@@ -36,7 +36,7 @@ public class AnalogOutputDeviceService {
 		Integer numberOfDevices = repository.findAllByUser(user).size();
 		DevicesPerUserValidate devicesPerUserValidate = new DevicesPerUserValidate(100, 10, 5);
 		devicesPerUserValidate.validate(user, numberOfDevices);
-		AnalogOutputDevice device = form.toDevice(user);
+		DiscreteDevice device = form.toDevice(user);
 		String createdDeviceId = repository.create(device);
 		device.setId(createdDeviceId);
 		mqttDeviceRoleService.create(device);
@@ -55,31 +55,31 @@ public class AnalogOutputDeviceService {
 		return;
 	}
 
-	public AnalogOutputDeviceDto updateById(String id, AnalogOutputDeviceForm form) {
-		AnalogOutputDevice device = findById(id);
+	public DiscreteDeviceDto updateById(String id, DiscreteDeviceForm form) {
+		DiscreteDevice device = findById(id);
 		device.setLocation(form.getLocation());
 		device.setName(form.getName());
-		device.setOutput(form.getOutput());
-		return new AnalogOutputDeviceDto(repository.updateById(device));
-	}
-	
-	public AnalogOutputDeviceDto findByIdDto(String id) {
-		return new AnalogOutputDeviceDto(findById(id));
+		device.setStatus(form.isStatus());
+		return new DiscreteDeviceDto(repository.updateById(device));
 	}
 
-	public AnalogOutputDevice findById(String id) {
-		Optional<AnalogOutputDevice> device = repository.findById(id);
+	public DiscreteDeviceDto findByIdDto(String id) {
+		return new DiscreteDeviceDto(findById(id));
+	}
+
+	public DiscreteDevice findById(String id) {
+		Optional<DiscreteDevice> device = repository.findById(id);
 		return device
 				.orElseThrow(() -> new ObjectNotFoundException("Device with id " + id + " not found in database!"));
 	}
 
-	public List<AnalogOutputDeviceDto> findAllByUser(String userId) {
+	public List<DiscreteDeviceDto> findAllByUser(String userId) {
 		User user = userService.findById(userId);
-		return repository.findAllByUser(user).stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
+		return repository.findAllByUser(user).stream().map(device -> new DiscreteDeviceDto(device)).toList();
 	}
 
-	public List<AnalogOutputDeviceDto> findAll() {
-		return repository.findAll().stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
+	public List<DiscreteDeviceDto> findAll() {
+		return repository.findAll().stream().map(device -> new DiscreteDeviceDto(device)).toList();
 	}
 
 }

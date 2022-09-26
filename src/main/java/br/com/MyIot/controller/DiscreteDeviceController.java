@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.MyIot.dto.AnalogOutputDeviceDto;
-import br.com.MyIot.dto.AnalogOutputDeviceForm;
-import br.com.MyIot.service.AnalogOutputDeviceService;
+import br.com.MyIot.dto.DiscreteDeviceDto;
+import br.com.MyIot.dto.DiscreteDeviceForm;
+import br.com.MyIot.service.DiscreteDeviceService;
 
 @RestController
-@RequestMapping(value = "/analog-output-device")
-public class AnalogOutputDeviceController {
+@RequestMapping(value = "/discrete-device")
+public class DiscreteDeviceController {
 
 	@Autowired
-	private AnalogOutputDeviceService service;
-
+	private DiscreteDeviceService service;
+	
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody AnalogOutputDeviceForm form) {
+	public ResponseEntity<String> create(@RequestBody DiscreteDeviceForm form) {
 		String createdDeviceId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createdDeviceId)
 				.toUri();
@@ -47,23 +47,23 @@ public class AnalogOutputDeviceController {
 	}
 
 	@PutMapping(value = "/id={id}")
-	public ResponseEntity<AnalogOutputDeviceDto> updateById(@PathVariable String id,
-			@RequestBody AnalogOutputDeviceForm form) {
+	public ResponseEntity<DiscreteDeviceDto> updateById(@PathVariable String id,
+			@RequestBody DiscreteDeviceForm form) {
 		return ResponseEntity.ok().body(service.updateById(id, form));
 	}
 	
 	@GetMapping(value = "/id={id}")
-	public ResponseEntity<AnalogOutputDeviceDto> findById(@PathVariable String id) {
+	public ResponseEntity<DiscreteDeviceDto> findById(@PathVariable String id) {
 		return ResponseEntity.ok().body(service.findByIdDto(id));
 	}
 
 	@GetMapping(value = "/user-id={userId}")
-	public ResponseEntity<List<AnalogOutputDeviceDto>> findAllByUserId(@PathVariable String userId) {
+	public ResponseEntity<List<DiscreteDeviceDto>> findAllByUserId(@PathVariable String userId) {
 		return ResponseEntity.ok().body(service.findAllByUser(userId));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<AnalogOutputDeviceDto>> findAll() {
+	public ResponseEntity<List<DiscreteDeviceDto>> findAll() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 }
