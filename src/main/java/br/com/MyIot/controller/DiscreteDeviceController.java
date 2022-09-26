@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.MyIot.dto.DiscreteDeviceDto;
-import br.com.MyIot.dto.DiscreteDeviceForm;
+import br.com.MyIot.dto.device.DiscreteDeviceDto;
+import br.com.MyIot.dto.device.DiscreteDeviceForm;
 import br.com.MyIot.service.DiscreteDeviceService;
 
 @RestController

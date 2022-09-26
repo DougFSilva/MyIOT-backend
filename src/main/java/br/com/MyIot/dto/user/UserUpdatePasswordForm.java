@@ -1,4 +1,4 @@
-package br.com.MyIot.dto;
+package br.com.MyIot.dto.user;
 
 public class UserUpdatePasswordForm {
 

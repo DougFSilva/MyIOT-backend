@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.MyIot.dto.MeasuringDeviceDto;
-import br.com.MyIot.dto.MeasuringDeviceForm;
+import br.com.MyIot.dto.device.MeasuringDeviceDto;
+import br.com.MyIot.dto.device.MeasuringDeviceForm;
 import br.com.MyIot.service.MeasuringDeviceService;
 
 @RestController

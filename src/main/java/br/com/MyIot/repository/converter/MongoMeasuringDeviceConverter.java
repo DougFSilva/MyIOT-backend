@@ -3,7 +3,7 @@ package br.com.MyIot.repository.converter;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import br.com.MyIot.dto.MeasuringDeviceDto;
+import br.com.MyIot.dto.device.MeasuringDeviceDto;
 import br.com.MyIot.model.device.MeasuringDevice;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.repository.entity.MongoMeasuringDeviceEntity;

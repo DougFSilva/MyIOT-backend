@@ -1,4 +1,4 @@
-package br.com.MyIot.dto;
+package br.com.MyIot.dto.device;
 
 public abstract class DeviceDto {
 

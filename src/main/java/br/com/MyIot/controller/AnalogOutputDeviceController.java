@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.MyIot.dto.AnalogOutputDeviceDto;
-import br.com.MyIot.dto.AnalogOutputDeviceForm;
+import br.com.MyIot.dto.device.AnalogOutputDeviceDto;
+import br.com.MyIot.dto.device.AnalogOutputDeviceForm;
 import br.com.MyIot.service.AnalogOutputDeviceService;
 
 @RestController

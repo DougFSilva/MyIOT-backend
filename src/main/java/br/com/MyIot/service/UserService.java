@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.MyIot.dto.UserDto;
-import br.com.MyIot.dto.UserForm;
-import br.com.MyIot.dto.UserUpdatePasswordForm;
+import br.com.MyIot.dto.user.UserDto;
+import br.com.MyIot.dto.user.UserForm;
+import br.com.MyIot.dto.user.UserUpdatePasswordForm;
 import br.com.MyIot.exception.DataIntegratyViolationException;
 import br.com.MyIot.exception.InvalidPasswordException;
 import br.com.MyIot.exception.ObjectNotFoundException;

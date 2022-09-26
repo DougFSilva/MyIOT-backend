@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.MyIot.dto.DateFilter;
-import br.com.MyIot.dto.MeasuredValueDto;
-import br.com.MyIot.dto.MeasuredValueForm;
+import br.com.MyIot.dto.device.DateFilter;
+import br.com.MyIot.dto.device.MeasuredValueDto;
+import br.com.MyIot.dto.device.MeasuredValueForm;
 import br.com.MyIot.service.MeasuredValueService;
 
 @RestController

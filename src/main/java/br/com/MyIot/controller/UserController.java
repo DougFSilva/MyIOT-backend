@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.MyIot.dto.UserDto;
-import br.com.MyIot.dto.UserForm;
-import br.com.MyIot.dto.UserUpdatePasswordForm;
+import br.com.MyIot.dto.user.UserDto;
+import br.com.MyIot.dto.user.UserForm;
+import br.com.MyIot.dto.user.UserUpdatePasswordForm;
 import br.com.MyIot.service.UserService;
 
 @RestController

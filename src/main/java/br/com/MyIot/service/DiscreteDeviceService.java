@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.MyIot.dto.DiscreteDeviceDto;
-import br.com.MyIot.dto.DiscreteDeviceForm;
+import br.com.MyIot.dto.device.DiscreteDeviceDto;
+import br.com.MyIot.dto.device.DiscreteDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
 import br.com.MyIot.exception.UserNotApprovedException;
 import br.com.MyIot.model.device.DevicesPerUserValidate;

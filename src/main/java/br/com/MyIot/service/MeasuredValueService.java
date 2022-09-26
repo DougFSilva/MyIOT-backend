@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.MyIot.dto.MeasuredValueDto;
-import br.com.MyIot.dto.MeasuredValueForm;
+import br.com.MyIot.dto.device.MeasuredValueDto;
+import br.com.MyIot.dto.device.MeasuredValueForm;
 import br.com.MyIot.model.device.MeasuredValue;
 import br.com.MyIot.model.device.MeasuredValueRepository;
 import br.com.MyIot.model.device.MeasuringDevice;

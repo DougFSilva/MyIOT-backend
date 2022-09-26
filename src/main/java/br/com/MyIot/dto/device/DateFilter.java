@@ -1,4 +1,4 @@
-package br.com.MyIot.dto;
+package br.com.MyIot.dto.device;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
