@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.MeasuringDeviceDto;
 import br.com.MyIot.dto.device.MeasuringDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
+import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UserNotApprovedException;
-import br.com.MyIot.model.device.DevicesPerUserValidate;
-import br.com.MyIot.model.device.MeasuringDevice;
-import br.com.MyIot.model.device.MeasuringDeviceRepository;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevicePerUser;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDeviceRepository;
 import br.com.MyIot.model.user.User;
+import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
 
 @Service
@@ -21,21 +24,24 @@ public class MeasuringDeviceService {
 
 	@Autowired
 	private MeasuringDeviceRepository repository;
-	
+
 	@Autowired
-	private UserService userService;
-	
+	private UserRepository userRepository;
+
 	@Autowired
 	private MqttDeviceRoleService mqttDeviceRoleService;
-	
+
+	@Autowired
+	private MeasuringDevicePerUser devicePerUser;
+
 	public String create(MeasuringDeviceForm form) {
-		User user = userService.findById(form.getUserId());
+		User autenticatedUser = getAuthenticatedUser();
+		User user = userRepository.findById(autenticatedUser.getId()).get();
 		if (!user.isApprovedRegistration()) {
 			throw new UserNotApprovedException("User " + user.getName() + " not approved!");
 		}
-		Integer numberOfDevices = repository.findAllByUser(user).size();
-		DevicesPerUserValidate devicesPerUserValidate = new DevicesPerUserValidate(100, 10, 5);
-		devicesPerUserValidate.validate(user, numberOfDevices);
+		Integer numberOfDevices = findAllByUser().size();
+		devicePerUser.validate(user, numberOfDevices);
 		MeasuringDevice device = form.toDevice(user);
 		String createdDeviceId = repository.create(device);
 		device.setId(createdDeviceId);
@@ -44,13 +50,13 @@ public class MeasuringDeviceService {
 	}
 
 	public void deleteById(String id) {
-		findById(id);
-		repository.deleteById(id);
+		MeasuringDevice device = findById(id);
+		repository.delete(device);
 		return;
 	}
 
-	public void deleteAllByUser(String userId) {
-		User user = userService.findById(userId);
+	public void deleteAllByUser() {
+		User user = getAuthenticatedUser();
 		repository.deleteAllByUser(user);
 		return;
 	}
@@ -69,17 +75,24 @@ public class MeasuringDeviceService {
 
 	public MeasuringDevice findById(String id) {
 		Optional<MeasuringDevice> device = repository.findById(id);
+		if(device.isPresent() && !device.get().getUser().equals(getAuthenticatedUser())) {
+			throw new OperationNotAllowedException("User without permission to execute this operation!");
+		}
 		return device
 				.orElseThrow(() -> new ObjectNotFoundException("Device with id " + id + " not found in database!"));
 	}
 
-	public List<MeasuringDeviceDto> findAllByUser(String userId) {
-		User user = userService.findById(userId);
+	public List<MeasuringDeviceDto> findAllByUser() {
+		User user = getAuthenticatedUser();
 		return repository.findAllByUser(user).stream().map(device -> new MeasuringDeviceDto(device)).toList();
 	}
 
 	public List<MeasuringDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new MeasuringDeviceDto(device)).toList();
 	}
-	
+
+	private User getAuthenticatedUser() {
+		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+
 }

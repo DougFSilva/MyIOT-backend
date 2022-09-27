@@ -1,5 +1,6 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.analogOutputDevice;
 
+import br.com.MyIot.model.device.Device;
 import br.com.MyIot.model.user.User;
 
 public class AnalogOutputDevice extends Device {

@@ -19,8 +19,8 @@ import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 
-import br.com.MyIot.model.device.AnalogOutputDevice;
-import br.com.MyIot.model.device.AnalogOutputDeviceRepository;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDeviceRepository;
 import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
@@ -63,8 +63,8 @@ public class MongoAnalogOutputDeviceRepository implements AnalogOutputDeviceRepo
 	}
 
 	@Override
-	public void deleteById(String id) {
-		getCollection().deleteOne(Filters.eq(new ObjectId(id)));
+	public void delete(AnalogOutputDevice device) {
+		getCollection().deleteOne(Filters.eq(new ObjectId(device.getId())));
 		mongoConnection.close();
 		return;
 	}

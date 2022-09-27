@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.AnalogOutputDeviceDto;
-import br.com.MyIot.model.device.AnalogOutputDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.repository.entity.MongoAnalogOutputDeviceEntity;
 

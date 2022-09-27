@@ -1,6 +1,6 @@
 package br.com.MyIot.dto.device;
 
-import br.com.MyIot.model.device.AnalogOutputDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
 
 public class AnalogOutputDeviceDto extends DeviceDto {
 

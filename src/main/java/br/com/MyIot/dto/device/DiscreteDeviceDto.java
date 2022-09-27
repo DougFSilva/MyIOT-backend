@@ -1,6 +1,6 @@
 package br.com.MyIot.dto.device;
 
-import br.com.MyIot.model.device.DiscreteDevice;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDevice;
 
 public class DiscreteDeviceDto extends DeviceDto {
 

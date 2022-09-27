@@ -1,8 +1,9 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.MeasuringDevice;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.MyIot.model.device.Device;
 import br.com.MyIot.model.user.User;
 
 public class MeasuringDevice extends Device {

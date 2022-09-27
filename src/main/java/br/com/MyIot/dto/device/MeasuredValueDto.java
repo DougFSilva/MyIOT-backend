@@ -3,7 +3,7 @@ package br.com.MyIot.dto.device;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import br.com.MyIot.model.device.MeasuredValue;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValue;
 
 public class MeasuredValueDto {
 

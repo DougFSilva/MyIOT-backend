@@ -10,6 +10,7 @@ import br.com.MyIot.exception.InvalidEmailException;
 import br.com.MyIot.exception.InvalidPasswordException;
 import br.com.MyIot.exception.MqttFailException;
 import br.com.MyIot.exception.ObjectNotFoundException;
+import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UnknownHostException;
 import br.com.MyIot.exception.UserDevicesLimitExceededException;
 import br.com.MyIot.exception.UserNotApprovedException;
@@ -83,6 +84,13 @@ public class ExceptionHandler {
 
 	@org.springframework.web.bind.annotation.ExceptionHandler(MqttFailException.class)
 	public ResponseEntity<StandartError> mqttFailException(MqttFailException exception) {
+		StandartError error = new StandartError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
+				exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+
+	@org.springframework.web.bind.annotation.ExceptionHandler(OperationNotAllowedException.class)
+	public ResponseEntity<StandartError> operationNotAllowedException(OperationNotAllowedException exception) {
 		StandartError error = new StandartError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
 				exception.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

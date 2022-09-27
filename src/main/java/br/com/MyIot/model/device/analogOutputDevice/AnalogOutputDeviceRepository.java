@@ -1,4 +1,4 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.analogOutputDevice;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ public interface AnalogOutputDeviceRepository {
 
 	String create(AnalogOutputDevice device);
 
-	void deleteById(String id);
+	void delete(AnalogOutputDevice device);
 
 	void deleteAllByUser(User user);
 

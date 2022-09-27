@@ -7,9 +7,9 @@ public interface UserRepository {
 
 	String create(User user);
 
-	void deleteById(String id);
+	void delete(User user);
 
-	User updateById(User updatedUser);
+	User update(User updatedUser);
 
 	Optional<User> findById(String id);
 

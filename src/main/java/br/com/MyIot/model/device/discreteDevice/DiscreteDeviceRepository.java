@@ -1,4 +1,4 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.discreteDevice;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,7 @@ public interface DiscreteDeviceRepository {
 
 	String create(DiscreteDevice device);
 
-	void deleteById(String id);
+	void delete(DiscreteDevice device);
 
 	void deleteAllByUser(User user);
 

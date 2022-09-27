@@ -19,8 +19,8 @@ import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 
-import br.com.MyIot.model.device.DiscreteDevice;
-import br.com.MyIot.model.device.DiscreteDeviceRepository;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDevice;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDeviceRepository;
 import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
@@ -64,8 +64,8 @@ public class MongoDiscreteDeviceRepository implements DiscreteDeviceRepository {
 	}
 
 	@Override
-	public void deleteById(String id) {
-		getCollection().deleteOne(Filters.eq(new ObjectId(id)));
+	public void delete(DiscreteDevice device) {
+		getCollection().deleteOne(Filters.eq(new ObjectId(device.getId())));
 		mongoConnection.close();
 		return;
 	}

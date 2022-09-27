@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.MyIot.model.device.AnalogOutputDevice;
-import br.com.MyIot.model.device.DiscreteDevice;
-import br.com.MyIot.model.device.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDevice;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
 import br.com.MyIot.mqtt.MqttStandardClient;
@@ -19,7 +19,7 @@ import br.com.MyIot.mqtt.MqttStandardClientService;
 import br.com.MyIot.service.AnalogOutputDeviceService;
 import br.com.MyIot.service.DiscreteDeviceService;
 import br.com.MyIot.service.MeasuringDeviceService;
-import br.com.MyIot.service.UserService;
+import br.com.MyIot.service.UserAdminService;
 
 @RestController
 @RequestMapping(value = "/mqtt")
@@ -32,7 +32,7 @@ public class MqttController {
 	private MqttDeviceRoleService roleService;
 
 	@Autowired
-	private UserService userService;
+	private UserAdminService userService;
 
 	@Autowired
 	private AnalogOutputDeviceService analogOutputDeviceService;

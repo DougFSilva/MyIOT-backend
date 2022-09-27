@@ -40,10 +40,10 @@ public class DiscreteDeviceController {
 		return ResponseEntity.ok().body("Device with id " + id + " deleted!");
 	}
 
-	@DeleteMapping(value = "/user-id={userId}")
-	public ResponseEntity<String> deleteAllByUserId(@PathVariable String userId) {
-		service.deleteAllByUser(userId);
-		return ResponseEntity.ok().body("Deleted Devices of user with id " + userId);
+	@DeleteMapping(value = "/all")
+	public ResponseEntity<String> deleteAllByUser() {
+		service.deleteAllByUser();
+		return ResponseEntity.ok().body("Devices deleted!");
 	}
 
 	@PutMapping(value = "/id={id}")
@@ -57,9 +57,9 @@ public class DiscreteDeviceController {
 		return ResponseEntity.ok().body(service.findByIdDto(id));
 	}
 
-	@GetMapping(value = "/user-id={userId}")
-	public ResponseEntity<List<DiscreteDeviceDto>> findAllByUserId(@PathVariable String userId) {
-		return ResponseEntity.ok().body(service.findAllByUser(userId));
+	@GetMapping(value = "/all")
+	public ResponseEntity<List<DiscreteDeviceDto>> findAllByUser() {
+		return ResponseEntity.ok().body(service.findAllByUser());
 	}
 
 	@GetMapping

@@ -9,7 +9,6 @@ public class CorsConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("*"); // Editar para permitir acesso somente pelo frontend desejado 
-		
+		registry.addMapping("/**").allowedOrigins("http://localhost:4200").allowedMethods("*");  
 	}
 }

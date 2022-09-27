@@ -43,7 +43,7 @@ public class MongoUserRepository implements UserRepository {
 	}
 
 	@Override
-	public User updateById(User user) {
+	public User update(User user) {
 		MongoUserEntity mongoUserEntity = mongoUserConverter.toMongoUserEntity(user);
 		List<Document> profilesDocuments = mongoUserEntity.getProfiles()
 				.stream()
@@ -63,8 +63,8 @@ public class MongoUserRepository implements UserRepository {
 	}
 
 	@Override
-	public void deleteById(String id) {
-		getCollection().deleteOne(Filters.eq(new ObjectId(id)));
+	public void delete(User user) {
+		getCollection().deleteOne(Filters.eq(new ObjectId(user.getId())));
 		mongoConnection.close();
 		return;
 	}

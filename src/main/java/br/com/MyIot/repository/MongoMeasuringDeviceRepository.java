@@ -21,8 +21,8 @@ import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.InsertOneResult;
 
-import br.com.MyIot.model.device.MeasuringDevice;
-import br.com.MyIot.model.device.MeasuringDeviceRepository;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDeviceRepository;
 import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
@@ -67,10 +67,10 @@ public class MongoMeasuringDeviceRepository implements MeasuringDeviceRepository
 	}
 
 	@Override
-	public void deleteById(String id) {
-		getCollection().deleteOne(Filters.eq(new ObjectId(id)));
+	public void delete(MeasuringDevice device) {
+		getCollection().deleteOne(Filters.eq(new ObjectId(device.getId())));
 		mongoConnection.close();
-		deleteCollection(id);
+		deleteCollection(device.getId());
 		return;
 	}
 

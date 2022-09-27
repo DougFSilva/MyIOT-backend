@@ -1,13 +1,11 @@
 package br.com.MyIot.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,53 +21,35 @@ import br.com.MyIot.service.UserService;
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
-
+	
 	@Autowired
 	private UserService service;
 
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody UserForm form) {
-		String userCreatedId = service.create(form);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(userCreatedId)
-				.toUri();
-		return ResponseEntity.created(uri).build();
+	ResponseEntity<String> create(@RequestBody UserForm form){
+		String createdUserId = service.create(form);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createdUserId).toUri();
+		return ResponseEntity.created(uri).body("thanks for using our system!");
 	}
-
-	@DeleteMapping(value = "/id={id}")
-	public ResponseEntity<String> delete(@PathVariable String id) {
-		service.deleteById(id);
-		return ResponseEntity.ok().body("User with id " + id + " deleted!");
+	
+	@DeleteMapping
+	ResponseEntity<String> delete(){
+		service.delete();
+		return ResponseEntity.ok().body("User deleted, goodbye!");
 	}
-
-	@PutMapping(value = "/id={id}")
-	public ResponseEntity<UserDto> updateById(@PathVariable String id, @RequestBody UserForm form) {
-		return ResponseEntity.ok().body(service.updateById(id, form));
+	
+	@PutMapping
+	ResponseEntity<UserDto> update(@RequestBody UserForm form){
+		return ResponseEntity.ok().body(service.update(form));
 	}
-
-	@PutMapping(value = "/update-password")
-	public ResponseEntity<String> updatedPasswordById(@RequestBody UserUpdatePasswordForm form) {
-		service.updatePasswordById(form);
-		return ResponseEntity.ok().body("Password updated successfully!");
+	
+	@PutMapping(value = "/password")
+	ResponseEntity<UserDto> updatePasword(@RequestBody UserUpdatePasswordForm form){
+		return ResponseEntity.ok().body(service.updatePasswordById(form));
 	}
-
-	@GetMapping(value = "/id={id}")
-	public ResponseEntity<UserDto> findById(@PathVariable String id) {
-		return ResponseEntity.ok().body(service.findByIdDto(id));
-	}
-
-	@GetMapping(value = "/email={address}")
-	public ResponseEntity<UserDto> findByEmail(@PathVariable String address) {
-		return ResponseEntity.ok().body(service.findByEmailDto(address));
-	}
-
+	
 	@GetMapping
-	public ResponseEntity<List<UserDto>> findAll() {
-		return ResponseEntity.ok().body(service.findAll());
+	ResponseEntity<UserDto> findUser(){
+		return ResponseEntity.ok().body(service.findByIdDto());
 	}
-
-	@PutMapping(value = "/approve-registration/id={id}/{approved}")
-	public ResponseEntity<UserDto> setApprovedRegistration(@PathVariable String id, @PathVariable boolean approved) {
-		return ResponseEntity.ok().body(service.setApproveRegistration(id, approved));
-	}
-
 }

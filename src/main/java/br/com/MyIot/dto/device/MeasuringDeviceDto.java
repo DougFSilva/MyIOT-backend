@@ -3,7 +3,7 @@ package br.com.MyIot.dto.device;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.MyIot.model.device.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 
 public class MeasuringDeviceDto extends DeviceDto {
 

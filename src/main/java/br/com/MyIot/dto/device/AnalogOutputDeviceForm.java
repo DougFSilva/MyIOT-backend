@@ -1,26 +1,19 @@
 package br.com.MyIot.dto.device;
 
-import br.com.MyIot.model.device.AnalogOutputDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
 import br.com.MyIot.model.user.User;
 
 public class AnalogOutputDeviceForm {
 	
-	private String userId;
-
 	private String location;
 
 	private String name;
 
-	public AnalogOutputDeviceForm(String userId, String location, String name) {
-		this.userId = userId;
+	public AnalogOutputDeviceForm(String location, String name) {
 		this.location = location;
 		this.name = name;
 	}
 	
-	public String getUserId() {
-		return userId;
-	}
-
 	public String getLocation() {
 		return location;
 	}

@@ -1,4 +1,4 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.MeasuringDevice;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,11 +9,11 @@ public interface MeasuringDeviceRepository {
 
 	String create(MeasuringDevice device);
 
-	void deleteById(String id);
+	void delete(MeasuringDevice device);
+	
+	MeasuringDevice update(MeasuringDevice updatedDevice);
 
 	void deleteAllByUser(User user);
-
-	MeasuringDevice update(MeasuringDevice updatedDevice);
 
 	Optional<MeasuringDevice> findById(String id);
 

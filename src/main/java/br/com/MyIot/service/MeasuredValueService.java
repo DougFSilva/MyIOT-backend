@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.MeasuredValueDto;
 import br.com.MyIot.dto.device.MeasuredValueForm;
-import br.com.MyIot.model.device.MeasuredValue;
-import br.com.MyIot.model.device.MeasuredValueRepository;
-import br.com.MyIot.model.device.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValue;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValueRepository;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 
 @Service
 public class MeasuredValueService {

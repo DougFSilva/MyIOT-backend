@@ -1,4 +1,4 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.MeasuringDevice;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -7,7 +7,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import br.com.MyIot.model.user.User;
-import br.com.MyIot.service.UserService;
+import br.com.MyIot.service.UserAdminService;
 
 @Controller
 public class WebSocketController {
@@ -16,7 +16,7 @@ public class WebSocketController {
 	private SimpMessagingTemplate messagingTemplate;
 	
 	@Autowired
-	private UserService userService;
+	private UserAdminService userService;
 
 	@MessageMapping("/user-id={userId}")
 	public void sendMessage(String message, @DestinationVariable("userId") String userId) {

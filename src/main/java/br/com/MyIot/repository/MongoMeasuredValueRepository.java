@@ -13,9 +13,9 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 
-import br.com.MyIot.model.device.MeasuredValue;
-import br.com.MyIot.model.device.MeasuredValueRepository;
-import br.com.MyIot.model.device.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValue;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValueRepository;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 import br.com.MyIot.repository.codec.MeasuredValueCodec;
 import br.com.MyIot.repository.config.MongoConnection;
 import br.com.MyIot.repository.converter.MongoMeasuredValueConverter;

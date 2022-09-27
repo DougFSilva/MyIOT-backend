@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.MeasuredValueForm;
 import br.com.MyIot.exception.MqttFailException;
-import br.com.MyIot.model.device.AnalogOutputDevice;
-import br.com.MyIot.model.device.DiscreteDevice;
-import br.com.MyIot.model.device.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDevice;
 import br.com.MyIot.mqtt.message.AnalogOutputDeviceMqttMessage;
 import br.com.MyIot.mqtt.message.DiscreteDeviceMqttMessage;
 import br.com.MyIot.mqtt.message.MeasuredValueMqttMessage;

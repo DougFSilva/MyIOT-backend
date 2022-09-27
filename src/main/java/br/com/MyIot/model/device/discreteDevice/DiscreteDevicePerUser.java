@@ -1,21 +1,24 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.discreteDevice;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import br.com.MyIot.exception.UserDevicesLimitExceededException;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
 
-public class DevicesPerUserValidate {
+@Service
+public class DiscreteDevicePerUser {
 
-	private Integer maxDevicesAdminUser = 100;
-	private Integer maxDevicesGoldUser = 10;
-	private Integer maxDevicesOfSilverUser = 5;
+	@Value("${user.admin.max.discreteDevice}")
+	private Integer maxDevicesAdminUser;
 	
-	public DevicesPerUserValidate(Integer maxDevicesAdminUser, Integer maxDevicesGoldUser, Integer maxDevicesOfSilverUser) {
-		this.maxDevicesAdminUser = maxDevicesAdminUser;
-		this.maxDevicesGoldUser = maxDevicesGoldUser;
-		this.maxDevicesOfSilverUser = maxDevicesOfSilverUser;
-	}
-
+	@Value("${user.gold.max.discreteDevice}")
+	private Integer maxDevicesGoldUser;
+	
+	@Value("${user.silver.max.discreteDevice}")
+	private Integer maxDevicesOfSilverUser;
+	
 	public boolean validate(User user, Integer devicesCount) {
 		ProfileType profileType = user.getProfiles().stream()
 				.sorted((p1, p2) -> Long.compare(p1.getType().getCod(), p2.getType().getCod())).findFirst().get()

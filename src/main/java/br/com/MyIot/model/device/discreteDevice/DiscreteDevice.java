@@ -1,5 +1,6 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.discreteDevice;
 
+import br.com.MyIot.model.device.Device;
 import br.com.MyIot.model.user.User;
 
 public class DiscreteDevice extends Device {
@@ -15,9 +16,9 @@ public class DiscreteDevice extends Device {
 		this.status = status;
 	}
 
-	public DiscreteDevice(User user, String location, String name, boolean status) {
+	public DiscreteDevice(User user, String location, String name) {
 		super(user, location, name);
-		this.status = status;
+		this.status = false;
 	}
 	
 	public DiscreteDevice(String location, String name, boolean status) {

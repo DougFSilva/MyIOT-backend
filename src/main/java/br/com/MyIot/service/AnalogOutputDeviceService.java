@@ -4,17 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.AnalogOutputDeviceDto;
 import br.com.MyIot.dto.device.AnalogOutputDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
+import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UserNotApprovedException;
-import br.com.MyIot.model.device.AnalogOutputDevice;
-import br.com.MyIot.model.device.AnalogOutputDeviceRepository;
-import br.com.MyIot.model.device.DevicesPerUserValidate;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevicePerUser;
+import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDeviceRepository;
 import br.com.MyIot.model.user.User;
+import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
 
 @Service
@@ -24,22 +26,22 @@ public class AnalogOutputDeviceService {
 	private AnalogOutputDeviceRepository repository;
 
 	@Autowired
-	private UserService userService;
+	private UserRepository userRepository;
 
 	@Autowired
 	private MqttDeviceRoleService mqttDeviceRoleService;
 	
 	@Autowired
-	private SimpMessagingTemplate messagingTemplate;
-
+	private AnalogOutputDevicePerUser devicesPerUser;
+	
 	public String create(AnalogOutputDeviceForm form) {
-		User user = userService.findById(form.getUserId());
+		User autenticatedUser = getAuthenticatedUser();
+		User user = userRepository.findById(autenticatedUser.getId()).get();
 		if (!user.isApprovedRegistration()) {
 			throw new UserNotApprovedException("User " + user.getName() + " not approved!");
 		}
-		Integer numberOfDevices = repository.findAllByUser(user).size();
-		DevicesPerUserValidate devicesPerUserValidate = new DevicesPerUserValidate(100, 10, 5);
-		devicesPerUserValidate.validate(user, numberOfDevices);
+		Integer numberOfDevices = findAllByUser().size();
+		devicesPerUser.validate(user, numberOfDevices);
 		AnalogOutputDevice device = form.toDevice(user);
 		String createdDeviceId = repository.create(device);
 		device.setId(createdDeviceId);
@@ -48,13 +50,13 @@ public class AnalogOutputDeviceService {
 	}
 
 	public void deleteById(String id) {
-		findById(id);
-		repository.deleteById(id);
+		AnalogOutputDevice device = findById(id);
+		repository.delete(device);
 		return;
 	}
 
-	public void deleteAllByUser(String userId) {
-		User user = userService.findById(userId);
+	public void deleteAllByUser() {
+		User user = getAuthenticatedUser();
 		repository.deleteAllByUser(user);
 		return;
 	}
@@ -67,11 +69,13 @@ public class AnalogOutputDeviceService {
 	}
 	
 	public AnalogOutputDeviceDto updateOutputById(String id, Integer output) {
-		AnalogOutputDevice device = findById(id);
-		device.setOutput(output);
-		AnalogOutputDevice updatedDevice = repository.update(device);
-		messagingTemplate.convertAndSend("/topic/hi/user0@gmail.com", new AnalogOutputDeviceDto(updatedDevice));
-		return new AnalogOutputDeviceDto();
+		Optional<AnalogOutputDevice> device = repository.findById(id);
+		if(device.isEmpty()) {
+			throw new ObjectNotFoundException("Device with id " + id + " not found in database!");
+		}
+		device.get().setOutput(output);
+		AnalogOutputDevice updatedDevice = repository.update(device.get());
+		return new AnalogOutputDeviceDto(updatedDevice);
 	}
 	
 	public AnalogOutputDeviceDto findByIdDto(String id) {
@@ -80,17 +84,24 @@ public class AnalogOutputDeviceService {
 
 	public AnalogOutputDevice findById(String id) {
 		Optional<AnalogOutputDevice> device = repository.findById(id);
+		if(device.isPresent() && !device.get().getUser().equals(getAuthenticatedUser())) {
+			throw new OperationNotAllowedException("User without permission to execute this operation!");
+		}
 		return device
 				.orElseThrow(() -> new ObjectNotFoundException("Device with id " + id + " not found in database!"));
 	}
-
-	public List<AnalogOutputDeviceDto> findAllByUser(String userId) {
-		User user = userService.findById(userId);
+	
+	public List<AnalogOutputDeviceDto> findAllByUser() {
+		User user = getAuthenticatedUser();
 		return repository.findAllByUser(user).stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
 	}
 	
 	public List<AnalogOutputDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
+	}
+	
+	private User getAuthenticatedUser() {
+		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
 }

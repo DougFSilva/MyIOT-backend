@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.DiscreteDeviceDto;
 import br.com.MyIot.dto.device.DiscreteDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
+import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UserNotApprovedException;
-import br.com.MyIot.model.device.DevicesPerUserValidate;
-import br.com.MyIot.model.device.DiscreteDevice;
-import br.com.MyIot.model.device.DiscreteDeviceRepository;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDevice;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDevicePerUser;
+import br.com.MyIot.model.device.discreteDevice.DiscreteDeviceRepository;
 import br.com.MyIot.model.user.User;
+import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
 
 @Service
@@ -23,19 +26,22 @@ public class DiscreteDeviceService {
 	private DiscreteDeviceRepository repository;
 
 	@Autowired
-	private UserService userService;
+	private UserRepository userRepository;
 
 	@Autowired
 	private MqttDeviceRoleService mqttDeviceRoleService;
+	
+	@Autowired
+	private DiscreteDevicePerUser devicePerUser;
 
 	public String create(DiscreteDeviceForm form) {
-		User user = userService.findById(form.getUserId());
+		User autenticatedUser = getAuthenticatedUser();
+		User user = userRepository.findById(autenticatedUser.getId()).get();
 		if (!user.isApprovedRegistration()) {
 			throw new UserNotApprovedException("User " + user.getName() + " not approved!");
 		}
-		Integer numberOfDevices = repository.findAllByUser(user).size();
-		DevicesPerUserValidate devicesPerUserValidate = new DevicesPerUserValidate(100, 10, 5);
-		devicesPerUserValidate.validate(user, numberOfDevices);
+		Integer numberOfDevices = findAllByUser().size();
+		devicePerUser.validate(user, numberOfDevices);
 		DiscreteDevice device = form.toDevice(user);
 		String createdDeviceId = repository.create(device);
 		device.setId(createdDeviceId);
@@ -44,13 +50,13 @@ public class DiscreteDeviceService {
 	}
 
 	public void deleteById(String id) {
-		findById(id);
-		repository.deleteById(id);
+		DiscreteDevice device = findById(id);
+		repository.delete(device);
 		return;
 	}
 
-	public void deleteAllByUser(String userId) {
-		User user = userService.findById(userId);
+	public void deleteAllByUser() {
+		User user = getAuthenticatedUser();
 		repository.deleteAllByUser(user);
 		return;
 	}
@@ -59,14 +65,16 @@ public class DiscreteDeviceService {
 		DiscreteDevice device = findById(id);
 		device.setLocation(form.getLocation());
 		device.setName(form.getName());
-		device.setStatus(form.isStatus());
 		return new DiscreteDeviceDto(repository.update(device));
 	}
 	
 	public DiscreteDeviceDto updateStatusById(String id, boolean status) {
-		DiscreteDevice device = findById(id);
-		device.setStatus(status);
-		return new DiscreteDeviceDto(repository.update(device));
+		Optional<DiscreteDevice> device = repository.findById(id);
+		if(device.isEmpty()) {
+			throw new ObjectNotFoundException("Device with id " + id + " not found in database!");
+		}
+		device.get().setStatus(status);
+		return new DiscreteDeviceDto(repository.update(device.get()));
 	}
 
 	public DiscreteDeviceDto findByIdDto(String id) {
@@ -75,17 +83,24 @@ public class DiscreteDeviceService {
 
 	public DiscreteDevice findById(String id) {
 		Optional<DiscreteDevice> device = repository.findById(id);
+		if(device.isPresent() && !device.get().getUser().equals(getAuthenticatedUser())) {
+			throw new OperationNotAllowedException("User without permission to execute this operation!");
+		}
 		return device
 				.orElseThrow(() -> new ObjectNotFoundException("Device with id " + id + " not found in database!"));
 	}
 
-	public List<DiscreteDeviceDto> findAllByUser(String userId) {
-		User user = userService.findById(userId);
+	public List<DiscreteDeviceDto> findAllByUser() {
+		User user = getAuthenticatedUser();
 		return repository.findAllByUser(user).stream().map(device -> new DiscreteDeviceDto(device)).toList();
 	}
 
 	public List<DiscreteDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new DiscreteDeviceDto(device)).toList();
+	}
+	
+	private User getAuthenticatedUser() {
+		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
 }

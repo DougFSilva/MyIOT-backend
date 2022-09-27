@@ -2,12 +2,10 @@ package br.com.MyIot.dto.device;
 
 import java.util.List;
 
-import br.com.MyIot.model.device.MeasuringDevice;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 import br.com.MyIot.model.user.User;
 
 public class MeasuringDeviceForm {
-
-	protected String userId;
 
 	protected String location;
 
@@ -15,15 +13,10 @@ public class MeasuringDeviceForm {
 
 	private List<String> keyNames;
 
-	public MeasuringDeviceForm(String userId, String location, String name, List<String> keyNames) {
-		this.userId = userId;
+	public MeasuringDeviceForm(String location, String name, List<String> keyNames) {
 		this.location = location;
 		this.name = name;
 		this.keyNames = keyNames;
-	}
-
-	public String getUserId() {
-		return userId;
 	}
 
 	public String getLocation() {

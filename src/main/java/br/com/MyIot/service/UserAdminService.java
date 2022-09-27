@@ -1,19 +1,17 @@
 package br.com.MyIot.service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.user.UserDto;
-import br.com.MyIot.dto.user.UserForm;
-import br.com.MyIot.dto.user.UserUpdatePasswordForm;
+import br.com.MyIot.dto.user.UserAdminForm;
 import br.com.MyIot.exception.DataIntegratyViolationException;
-import br.com.MyIot.exception.InvalidPasswordException;
+import br.com.MyIot.exception.ObjectNotFoundException;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuringDeviceRepository;
 import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDeviceRepository;
 import br.com.MyIot.model.device.discreteDevice.DiscreteDeviceRepository;
@@ -26,9 +24,8 @@ import br.com.MyIot.mqtt.MqttStandardClient;
 import br.com.MyIot.mqtt.MqttStandardClientService;
 import br.com.MyIot.util.password.PasswordManager;
 
-@RestController
-@RequestMapping
-public class UserService {
+@Service
+public class UserAdminService {
 
 	@Autowired
 	private UserRepository repository;
@@ -47,14 +44,13 @@ public class UserService {
 
 	@Autowired
 	private PasswordManager passwordManager;
-	
-	public String create(UserForm form) {
+
+	public String create(UserAdminForm form) {
 		if (repository.findByEmail(new Email(form.getEmail())).isPresent()) {
 			throw new DataIntegratyViolationException("Email " + form.getEmail() + " already exist in database!");
 		}
 		String password = passwordManager.validateAndEncode(form.getPassword());
-		List<Profile> profiles = Arrays.asList(new Profile(ProfileType.SILVER_USER));
-		User user = new User(form.getEmail(), form.getName(), form.getPassword(), profiles);
+		User user = form.toUser();
 		user.setPassword(password);
 		user.setClientMqttPassword(UUID.randomUUID().toString());
 		String createdUserId = repository.create(user);
@@ -62,8 +58,8 @@ public class UserService {
 		return createdUserId;
 	};
 
-	public void delete() {
-		User user = getAuthenticatedUser();
+	public void deleteById(String id) {
+		User user = findById(id);
 		discreteDeviceRepository.deleteAllByUser(user);
 		measuringDeviceRepository.deleteAllByUser(user);
 		analogOutputDeviceRepository.deleteAllByUser(user);
@@ -72,30 +68,45 @@ public class UserService {
 		return;
 	}
 
-	public UserDto update(UserForm form) {
-		User user = getAuthenticatedUser();
+	public UserDto updateById(String id, UserAdminForm form) {
+		User user = findById(id);
 		user.setName(form.getName());
+		List<Profile> profiles = form.getProfiles().stream().map(profile -> new Profile(ProfileType.toEnum(profile)))
+				.collect(Collectors.toList());
+		user.setProfiles(profiles);
 		return new UserDto(repository.update(user));
 	}
 
-	public UserDto updatePasswordById(UserUpdatePasswordForm form) {
-		User user = getAuthenticatedUser();
-		if (form.getCurrentPassword().equals(form.getNewPassword())) {
-			throw new InvalidPasswordException("The new password must be different from the current password!");
-		}
-		if (!passwordManager.compare(form.getCurrentPassword(), user.getPassword())) {
-			throw new InvalidPasswordException("Incorrect current password!");
-		}
-		String password = passwordManager.validateAndEncode(form.getNewPassword());
-		user.setPassword(password);
-		return new UserDto(repository.update(user));
+	public UserDto findByIdDto(String id) {
+		return new UserDto(findById(id));
 	}
 
-	public UserDto findByIdDto() {
-		return new UserDto(getAuthenticatedUser());
+	public User findById(String id) {
+		Optional<User> user = repository.findById(id);
+		return user.orElseThrow(() -> new ObjectNotFoundException("User with id " + id + " not found in database!"));
+	}
+
+	public UserDto findByEmailDto(String address) {
+		return new UserDto(findByEmail(address));
+	}
+
+	public User findByEmail(String address) {
+		Optional<User> user = repository.findByEmail(new Email(address));
+		return user.orElseThrow(
+				() -> new ObjectNotFoundException("User with email " + address + " not found in database!"));
+	}
+
+	public List<UserDto> findAll() {
+		return repository.findAll().stream().map(user -> new UserDto(user)).toList();
+	}
+
+	public UserDto setApproveRegistration(String id, boolean approved) {
+		User user = findById(id);
+		user.setApprovedRegistration(approved);
+		User updatedUser = repository.setApproveRegistration(user, approved);
+		mqttStandardClientService.enable(new MqttStandardClient(updatedUser));
+		return new UserDto(updatedUser);
 	}
 	
-	private User getAuthenticatedUser() {
-		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	}
 }
+	
