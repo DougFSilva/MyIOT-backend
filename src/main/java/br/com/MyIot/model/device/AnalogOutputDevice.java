@@ -19,6 +19,11 @@ public class AnalogOutputDevice extends Device {
 		super(user, location, name);
 		this.output = output;
 	}
+	
+	public AnalogOutputDevice(User user, String location, String name) {
+		super(user, location, name);
+		this.output = 0;
+	}
 
 	public Integer getOutput() {
 		return output;

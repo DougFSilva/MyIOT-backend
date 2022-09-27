@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.AnalogOutputDeviceDto;
@@ -27,6 +28,9 @@ public class AnalogOutputDeviceService {
 
 	@Autowired
 	private MqttDeviceRoleService mqttDeviceRoleService;
+	
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 
 	public String create(AnalogOutputDeviceForm form) {
 		User user = userService.findById(form.getUserId());
@@ -59,8 +63,15 @@ public class AnalogOutputDeviceService {
 		AnalogOutputDevice device = findById(id);
 		device.setLocation(form.getLocation());
 		device.setName(form.getName());
-		device.setOutput(form.getOutput());
-		return new AnalogOutputDeviceDto(repository.updateById(device));
+		return new AnalogOutputDeviceDto(repository.update(device));
+	}
+	
+	public AnalogOutputDeviceDto updateOutputById(String id, Integer output) {
+		AnalogOutputDevice device = findById(id);
+		device.setOutput(output);
+		AnalogOutputDevice updatedDevice = repository.update(device);
+		messagingTemplate.convertAndSend("/topic/hi/user0@gmail.com", new AnalogOutputDeviceDto(updatedDevice));
+		return new AnalogOutputDeviceDto();
 	}
 	
 	public AnalogOutputDeviceDto findByIdDto(String id) {

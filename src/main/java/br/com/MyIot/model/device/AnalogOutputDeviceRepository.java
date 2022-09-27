@@ -13,7 +13,7 @@ public interface AnalogOutputDeviceRepository {
 
 	void deleteAllByUser(User user);
 
-	AnalogOutputDevice updateById(AnalogOutputDevice updatedDevice);
+	AnalogOutputDevice update(AnalogOutputDevice updatedDevice);
 
 	Optional<AnalogOutputDevice> findById(String id);
 

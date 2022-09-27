@@ -35,6 +35,16 @@ public class User implements UserDetails{
 		this.approvedRegistration = false;
 		this.profiles = profiles;
 	}
+	
+	public User(String emailAddress, String name, String password, String clientMqttPassword,
+			List<Profile> profiles) {
+		setEmail(emailAddress);
+		this.name = name;
+		this.password = password;
+		this.clientMqttPassword = clientMqttPassword;
+		this.approvedRegistration = false;
+		this.profiles = profiles;
+	}
 
 	public User(String emailAddress, String name, String password, List<Profile> profiles) {
 		setEmail(emailAddress);

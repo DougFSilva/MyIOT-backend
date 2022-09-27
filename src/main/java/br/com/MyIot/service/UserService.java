@@ -81,7 +81,7 @@ public class UserService {
 
 	public void updatePasswordById(UserUpdatePasswordForm form) {
 		User user = findById(form.getUserId());
-		if(form.getCurrentPassword().equals(form.getNewPassword())) {
+		if (form.getCurrentPassword().equals(form.getNewPassword())) {
 			throw new InvalidPasswordException("The new password must be different from the current password!");
 		}
 		if (!passwordManager.compare(form.getCurrentPassword(), user.getPassword())) {
@@ -102,12 +102,14 @@ public class UserService {
 		return user.orElseThrow(() -> new ObjectNotFoundException("User with id " + id + " not found in database!"));
 	}
 
-	public UserDto findByEmail(String address) {
+	public UserDto findByEmailDto(String address) {
+		return new UserDto(findByEmail(address));
+	}
+
+	public User findByEmail(String address) {
 		Optional<User> user = repository.findByEmail(new Email(address));
-		if (user.isEmpty()) {
-			throw new ObjectNotFoundException("User with email " + address + " not found in database!");
-		}
-		return new UserDto(user.get());
+		return user.orElseThrow(
+				() -> new ObjectNotFoundException("User with email " + address + " not found in database!"));
 	}
 
 	public List<UserDto> findAll() {
@@ -118,6 +120,7 @@ public class UserService {
 		User user = findById(id);
 		user.setApprovedRegistration(approved);
 		User updatedUser = repository.setApproveRegistration(user, approved);
+		mqttStandardClientService.enable(new MqttStandardClient(updatedUser));
 		return new UserDto(updatedUser);
 	}
 }

@@ -13,7 +13,7 @@ public interface MeasuringDeviceRepository {
 
 	void deleteAllByUser(User user);
 
-	MeasuringDevice updateById(MeasuringDevice updatedDevice);
+	MeasuringDevice update(MeasuringDevice updatedDevice);
 
 	Optional<MeasuringDevice> findById(String id);
 

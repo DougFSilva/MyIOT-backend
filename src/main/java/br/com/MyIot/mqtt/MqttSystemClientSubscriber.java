@@ -10,29 +10,30 @@ import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.MyIot.dto.device.MeasuredValueForm;
 import br.com.MyIot.exception.MqttFailException;
 import br.com.MyIot.model.device.AnalogOutputDevice;
-import br.com.MyIot.model.device.AnalogOutputDeviceRepository;
 import br.com.MyIot.model.device.DiscreteDevice;
-import br.com.MyIot.model.device.DiscreteDeviceRepository;
-import br.com.MyIot.model.device.MeasuredValueRepository;
 import br.com.MyIot.model.device.MeasuringDevice;
-import br.com.MyIot.model.device.MeasuringDeviceRepository;
+import br.com.MyIot.mqtt.message.AnalogOutputDeviceMqttMessage;
+import br.com.MyIot.mqtt.message.DiscreteDeviceMqttMessage;
+import br.com.MyIot.mqtt.message.MeasuredValueMqttMessage;
+import br.com.MyIot.mqtt.message.MqttMessageConverter;
+import br.com.MyIot.service.AnalogOutputDeviceService;
+import br.com.MyIot.service.DiscreteDeviceService;
+import br.com.MyIot.service.MeasuredValueService;
 
 @Service
 public class MqttSystemClientSubscriber implements MqttCallback {
 
 	@Autowired
-	private AnalogOutputDeviceRepository analogOutputDeviceRepository;
+	private AnalogOutputDeviceService analogOutputDeviceService;
 
 	@Autowired
-	private DiscreteDeviceRepository discreteDeviceRepository;
+	private DiscreteDeviceService discreteDeviceService;
 
 	@Autowired
-	private MeasuringDeviceRepository measuringDeviceRepository;
-
-	@Autowired
-	private MeasuredValueRepository measuredValueRepository;
+	private MeasuredValueService measuredValueService;
 
 	private String clientId;
 
@@ -100,32 +101,27 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 		String deviceId = topicSplit[2];
 		if (deviceType.equals(AnalogOutputDevice.class.getSimpleName())) {
 			new Thread(() -> {
-//		MqttMessageConverter converter = new MqttMessageConverter();
-//				AnalogOutputDeviceMqttMessage convertedMessage = converter.toAnalogOutputDeviceMqttMessage(message);
-//				//UpdateOutputOfAnalogOutputDevice updtateOutput = new UpdateOutputOfAnalogOutputDevice(
-//						analogOutputDeviceRepository);
-//				updtateOutput.update(deviceId, convertedMessage.getOutput());
+				MqttMessageConverter converter = new MqttMessageConverter();
+				AnalogOutputDeviceMqttMessage convertedMessage = converter.toAnalogOutputDeviceMqttMessage(message);
+				analogOutputDeviceService.updateOutputById(deviceId, convertedMessage.getOutput());
 			}).start();
 		}
 
 		if (deviceType.equals(DiscreteDevice.class.getSimpleName())) {
 			new Thread(() -> {
-//				MqttMessageConverter converter = new MqttMessageConverter();
-//				DiscreteDeviceMqttMessage convertedMessage = converter.toDiscreteDeviceMqttMessage(message);
-//				UpdateStatusOfDiscreteDevice updateStatus = new UpdateStatusOfDiscreteDevice(discreteDeviceRepository);
-//				updateStatus.update(deviceId, convertedMessage.isStatus());
+				MqttMessageConverter converter = new MqttMessageConverter();
+				DiscreteDeviceMqttMessage convertedMessage = converter.toDiscreteDeviceMqttMessage(message);
+				discreteDeviceService.updateStatusById(deviceId, convertedMessage.isStatus());
 			}).start();
 		}
 
 		if (deviceType.equals(MeasuringDevice.class.getSimpleName())) {
 			new Thread(() -> {
-//				MqttMessageConverter converter = new MqttMessageConverter();
-//				MeasuredValueMqttMessage convertedMessage = converter.toMeasuredValueMqttMessage(message);
-//				MeasuredValueForm form = new MeasuredValueForm(deviceId, convertedMessage.getValues(),
-//						convertedMessage.getTimestamp());
-//				CreateMeasuredValue createMeasuredValue = new CreateMeasuredValue(measuredValueRepository,
-//						measuringDeviceRepository);
-//				createMeasuredValue.create(form);
+				MqttMessageConverter converter = new MqttMessageConverter();
+				MeasuredValueMqttMessage convertedMessage = converter.toMeasuredValueMqttMessage(message);
+				MeasuredValueForm form = new MeasuredValueForm(deviceId, convertedMessage.getValues(),
+						convertedMessage.getTimestamp());
+				measuredValueService.create(form);
 			}).start();
 		}
 	}

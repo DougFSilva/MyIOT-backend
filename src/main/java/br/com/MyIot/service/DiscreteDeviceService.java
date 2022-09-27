@@ -60,7 +60,13 @@ public class DiscreteDeviceService {
 		device.setLocation(form.getLocation());
 		device.setName(form.getName());
 		device.setStatus(form.isStatus());
-		return new DiscreteDeviceDto(repository.updateById(device));
+		return new DiscreteDeviceDto(repository.update(device));
+	}
+	
+	public DiscreteDeviceDto updateStatusById(String id, boolean status) {
+		DiscreteDevice device = findById(id);
+		device.setStatus(status);
+		return new DiscreteDeviceDto(repository.update(device));
 	}
 
 	public DiscreteDeviceDto findByIdDto(String id) {

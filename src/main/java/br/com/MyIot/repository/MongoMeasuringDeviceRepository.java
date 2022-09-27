@@ -54,7 +54,7 @@ public class MongoMeasuringDeviceRepository implements MeasuringDeviceRepository
 	}
 
 	@Override
-	public MeasuringDevice updateById(MeasuringDevice updatedDevice) {
+	public MeasuringDevice update(MeasuringDevice updatedDevice) {
 		MongoMeasuringDeviceEntity entity = getCollection().findOneAndUpdate(
 				Filters.eq(new ObjectId(updatedDevice.getId())),
 				Updates.combine(Updates.set("location", updatedDevice.getLocation()), 

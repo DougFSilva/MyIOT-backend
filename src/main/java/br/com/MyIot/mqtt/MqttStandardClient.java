@@ -15,6 +15,12 @@ public class MqttStandardClient {
 		this.username = user.getEmail().getAddress();
 		this.password = user.getClientMqttPassword();
 	}
+	
+	public MqttStandardClient(String id, String username, String password) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+	}
 
 	public String getId() {
 		return id;

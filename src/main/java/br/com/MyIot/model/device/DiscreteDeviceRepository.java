@@ -13,7 +13,7 @@ public interface DiscreteDeviceRepository {
 
 	void deleteAllByUser(User user);
 
-	DiscreteDevice updateById(DiscreteDevice updatedDevice);
+	DiscreteDevice update(DiscreteDevice updatedDevice);
 
 	Optional<DiscreteDevice> findById(String id);
 

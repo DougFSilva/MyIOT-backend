@@ -51,7 +51,7 @@ public class MongoAnalogOutputDeviceRepository implements AnalogOutputDeviceRepo
 	}
 
 	@Override
-	public AnalogOutputDevice updateById(AnalogOutputDevice updatedDevice) {
+	public AnalogOutputDevice update(AnalogOutputDevice updatedDevice) {
 		MongoAnalogOutputDeviceEntity entity = getCollection().findOneAndUpdate(
 				Filters.eq(new ObjectId(updatedDevice.getId())),
 				Updates.combine(Updates.set("location", updatedDevice.getLocation()),

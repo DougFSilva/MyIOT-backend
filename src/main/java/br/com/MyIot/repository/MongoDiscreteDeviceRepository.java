@@ -51,7 +51,7 @@ public class MongoDiscreteDeviceRepository implements DiscreteDeviceRepository {
 	}
 
 	@Override
-	public DiscreteDevice updateById(DiscreteDevice updatedDevice) {
+	public DiscreteDevice update(DiscreteDevice updatedDevice) {
 		MongoDiscreteDeviceEntity entity = getCollection().findOneAndUpdate(
 				Filters.eq(new ObjectId(updatedDevice.getId())),
 				Updates.combine(Updates.set("location", updatedDevice.getLocation()),

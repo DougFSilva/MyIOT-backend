@@ -60,7 +60,7 @@ public class MeasuringDeviceService {
 		device.setLocation(form.getLocation());
 		device.setName(form.getName());
 		device.setKeyNames(form.getKeyNames());
-		return new MeasuringDeviceDto(repository.updateById(device));
+		return new MeasuringDeviceDto(repository.update(device));
 	}
 
 	public MeasuringDeviceDto findByIdDto(String id) {
