@@ -19,24 +19,11 @@ import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.model.user.UserRepository;
-import br.com.MyIot.mqtt.MqttSystemClientService;
 import br.com.MyIot.mqtt.MqttSystemClientSubscriber;
 import br.com.MyIot.repository.config.MongoConnection;
 
 @Configuration
 public class InitialConfiguration implements ApplicationRunner {
-	
-	@Autowired
-	private MqttSystemClientSubscriber mqttClient;
-	
-	@Autowired 
-	private MqttSystemClientService mqttClientService;
-	
-	@Autowired
-	private MongoConnection mongoConnection;
-	
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Value("${mqtt.uri}")
 	private String mqttUri;
@@ -55,16 +42,16 @@ public class InitialConfiguration implements ApplicationRunner {
 
 	@Value("${user.master.mqttClientId}")
 	private String userMasterMqttClientId;
-
-	@Value("${mqtt.system.clientId}")
-	private String mqttSystemClientId;
-
-	@Value("${mqtt.system.username}")
-	private String mqttSystemUsername;
-
-	@Value("${mqtt.system.password}")
-	private String mqttSystemPassword;
-
+	
+	@Autowired
+	private MqttSystemClientSubscriber mqttClient;
+	
+	@Autowired
+	private MongoConnection mongoConnection;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		if(userRepository.findByEmail(new Email(userMasterEmail)).isEmpty()) {
@@ -73,10 +60,7 @@ public class InitialConfiguration implements ApplicationRunner {
 			userRepository.create(user);
 		};
 		createMongoIndex();
-		mqttClientService.create(mqttSystemClientId, mqttSystemUsername, mqttSystemPassword);
-		mqttClient.setCredentials(mqttUri, mqttSystemClientId, mqttSystemUsername, mqttSystemPassword)
-				  .connect()
-				  .subscribe();
+		mqttClient.connect();
 	}
 	
 	public void createMongoIndex() {

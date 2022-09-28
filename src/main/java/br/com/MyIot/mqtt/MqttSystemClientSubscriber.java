@@ -8,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import br.com.MyIot.dto.device.MeasuredValueForm;
@@ -26,6 +27,18 @@ import br.com.MyIot.service.MeasuredValueService;
 @Service
 public class MqttSystemClientSubscriber implements MqttCallback {
 
+	@Value("${mqtt.uri}")
+	private String uri;
+	
+	@Value("${mqtt.system.clientId}")
+	private String clientId;
+
+	@Value("${mqtt.system.username}")
+	private String username;
+
+	@Value("${mqtt.system.password}")
+	private String password;
+	
 	@Autowired
 	private AnalogOutputDeviceService analogOutputDeviceService;
 
@@ -34,28 +47,14 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 
 	@Autowired
 	private MeasuredValueService measuredValueService;
-
-	private String clientId;
-
-	private String uri;
-
-	private String username;
-
-	private String password;
-
-	private MqttClient client;
-
-	public MqttSystemClientSubscriber setCredentials(String uri, String clientId, String username, String password) {
-		this.uri = uri;
-		this.clientId = clientId;
-		this.username = username;
-		this.password = password;
-		return this;
-	}
-
+	
+	@Autowired 
+	private MqttSystemClientService mqttClientService;
+	
 	public MqttSystemClientSubscriber connect() {
+		mqttClientService.create(clientId, username, password);
 		try {
-			this.client = new MqttClient(uri, clientId, new MqttDefaultFilePersistence());
+			MqttClient client = new MqttClient(uri, clientId, new MqttDefaultFilePersistence());
 			MqttConnectOptions options = new MqttConnectOptions();
 			options.setUserName(username);
 			options.setPassword(password.toCharArray());
@@ -63,29 +62,19 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 			options.setConnectionTimeout(0);
 			options.setAutomaticReconnect(true);
 			client.connect(options);
+			if (client.isConnected()) {
+				System.out.println("Mqtt Connected!");
+				try {
+					client.subscribe(MqttTopic.getSystemTopic(), 1);
+				} catch (MqttException e) {
+					throw new MqttFailException("Impossible subscribe, cause: " + e.getMessage());
+				}
+				client.setCallback(this);
+			}
 		} catch (MqttException e) {
-			throw new MqttFailException("Connect failure!, cause: " + e.getMessage());
+			throw new MqttFailException("Connection failure!, cause: " + e.getMessage());
 		}
 		return this;
-	}
-
-	public void subscribe() {
-		if (client.isConnected()) {
-			try {
-				client.subscribe(MqttTopic.getSystemTopic(), 1);
-			} catch (MqttException e) {
-				throw new MqttFailException("Impossible subscribe, cause: " + e.getMessage());
-			}
-			client.setCallback(this);
-		}
-	}
-
-	public void unsubscribe() {
-		try {
-			this.client.unsubscribe(MqttTopic.getSystemTopic());
-		} catch (MqttException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -100,29 +89,23 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 		String deviceType = topicSplit[1];
 		String deviceId = topicSplit[2];
 		if (deviceType.equals(AnalogOutputDevice.class.getSimpleName())) {
-			new Thread(() -> {
 				MqttMessageConverter converter = new MqttMessageConverter();
 				AnalogOutputDeviceMqttMessage convertedMessage = converter.toAnalogOutputDeviceMqttMessage(message);
 				analogOutputDeviceService.updateOutputById(deviceId, convertedMessage.getOutput());
-			}).start();
 		}
 
 		if (deviceType.equals(DiscreteDevice.class.getSimpleName())) {
-			new Thread(() -> {
 				MqttMessageConverter converter = new MqttMessageConverter();
 				DiscreteDeviceMqttMessage convertedMessage = converter.toDiscreteDeviceMqttMessage(message);
 				discreteDeviceService.updateStatusById(deviceId, convertedMessage.isStatus());
-			}).start();
 		}
 
 		if (deviceType.equals(MeasuringDevice.class.getSimpleName())) {
-			new Thread(() -> {
 				MqttMessageConverter converter = new MqttMessageConverter();
 				MeasuredValueMqttMessage convertedMessage = converter.toMeasuredValueMqttMessage(message);
 				MeasuredValueForm form = new MeasuredValueForm(deviceId, convertedMessage.getValues(),
 						convertedMessage.getTimestamp());
 				measuredValueService.mqttCreate(form);
-			}).start();
 		}
 	}
 
