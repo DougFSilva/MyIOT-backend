@@ -121,13 +121,14 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 				MeasuredValueMqttMessage convertedMessage = converter.toMeasuredValueMqttMessage(message);
 				MeasuredValueForm form = new MeasuredValueForm(deviceId, convertedMessage.getValues(),
 						convertedMessage.getTimestamp());
-				measuredValueService.create(form);
+				measuredValueService.mqttCreate(form);
 			}).start();
 		}
 	}
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken token) {
+		
 	}
 
 }

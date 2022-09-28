@@ -26,6 +26,9 @@ public class MeasuredValueService {
 
 	@Autowired
 	private MeasuringDeviceRepository measuringDeviceRepository;
+	
+	@Autowired
+	private WebSocketMessager messager;
 
 	public String create(MeasuredValueForm form) {
 		MeasuringDevice device = findDeviceById(form.getDeviceId());
@@ -35,7 +38,10 @@ public class MeasuredValueService {
 	public void mqttCreate(MeasuredValueForm form) {
 		Optional<MeasuringDevice> device = measuringDeviceRepository.findById(form.getDeviceId());
 		if(device.isPresent()) {
-			repository.create(new MeasuredValue(device.get(), form.getValues(), form.getTimestamp()));
+			MeasuredValue measuredValue = new MeasuredValue(device.get(), form.getValues(), form.getTimestamp());
+			String createMeasuredValueId = repository.create(measuredValue);
+			measuredValue.setId(createMeasuredValueId);
+			messager.sendMessage(measuredValue);
 		}
 	}
 

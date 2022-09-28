@@ -34,6 +34,9 @@ public class AnalogOutputDeviceService {
 	@Autowired
 	private AnalogOutputDevicePerUser devicesPerUser;
 	
+	@Autowired
+	private WebSocketMessager messager;
+	
 	public String create(AnalogOutputDeviceForm form) {
 		User autenticatedUser = getAuthenticatedUser();
 		User user = userRepository.findById(autenticatedUser.getId()).get();
@@ -75,6 +78,7 @@ public class AnalogOutputDeviceService {
 		}
 		device.get().setOutput(output);
 		AnalogOutputDevice updatedDevice = repository.update(device.get());
+		messager.sendMessage(updatedDevice);
 		return new AnalogOutputDeviceDto(updatedDevice);
 	}
 	

@@ -33,6 +33,9 @@ public class DiscreteDeviceService {
 	
 	@Autowired
 	private DiscreteDevicePerUser devicePerUser;
+	
+	@Autowired
+	private WebSocketMessager messager;
 
 	public String create(DiscreteDeviceForm form) {
 		User autenticatedUser = getAuthenticatedUser();
@@ -74,7 +77,9 @@ public class DiscreteDeviceService {
 			throw new ObjectNotFoundException("Device with id " + id + " not found in database!");
 		}
 		device.get().setStatus(status);
-		return new DiscreteDeviceDto(repository.update(device.get()));
+		DiscreteDevice updatedDevice = repository.update(device.get());
+		messager.sendMessage(updatedDevice);
+		return new DiscreteDeviceDto(updatedDevice);
 	}
 
 	public DiscreteDeviceDto findByIdDto(String id) {
