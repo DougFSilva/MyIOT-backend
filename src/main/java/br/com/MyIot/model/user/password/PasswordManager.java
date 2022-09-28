@@ -1,4 +1,4 @@
-package br.com.MyIot.util.password;
+package br.com.MyIot.model.user.password;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,14 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import br.com.MyIot.util.password.validation.PasswordValidation;
-import br.com.MyIot.util.password.validation.ValidationAtLeastOneDigit;
-import br.com.MyIot.util.password.validation.ValidationAtLeastOneLowerCase;
-import br.com.MyIot.util.password.validation.ValidationAtLeastOneSpecialCharacter;
-import br.com.MyIot.util.password.validation.ValidationAtLeastOneUpperCase;
-import br.com.MyIot.util.password.validation.ValidationBlankSpace;
-import br.com.MyIot.util.password.validation.ValidationPasswordSize;
 
 @Service
 public class PasswordManager {

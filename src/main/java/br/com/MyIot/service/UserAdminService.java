@@ -20,9 +20,9 @@ import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.model.user.UserRepository;
+import br.com.MyIot.model.user.password.PasswordManager;
 import br.com.MyIot.mqtt.MqttStandardClient;
 import br.com.MyIot.mqtt.MqttStandardClientService;
-import br.com.MyIot.util.password.PasswordManager;
 
 @Service
 public class UserAdminService {

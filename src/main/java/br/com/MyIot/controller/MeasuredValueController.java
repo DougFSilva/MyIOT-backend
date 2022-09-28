@@ -28,7 +28,6 @@ public class MeasuredValueController {
 
 	@PostMapping
 	public ResponseEntity<String> create(@RequestBody MeasuredValueForm form) {
-		System.out.println(form);
 		String createValueId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createValueId)
 				.toUri();

@@ -22,6 +22,7 @@ import br.com.MyIot.model.user.UserRepository;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
 	@Autowired
 	private TokenService tokenService;
 

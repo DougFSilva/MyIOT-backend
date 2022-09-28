@@ -1,4 +1,4 @@
-package br.com.MyIot.util.password.validation;
+package br.com.MyIot.model.user.password;
 
 import br.com.MyIot.exception.InvalidPasswordException;
 
