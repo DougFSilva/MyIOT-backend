@@ -90,7 +90,7 @@ public class MongoUserRepository implements UserRepository {
 	@Override
 	public List<User> findAll() {
 		List<User> users = new ArrayList<>();
-		MongoCursor<MongoUserEntity> mongoCursor = getCollection().find().iterator();
+		MongoCursor<MongoUserEntity> mongoCursor = getCollection().find().batchSize(10000).iterator();
 		mongoCursor.forEachRemaining(cursor -> users.add(mongoUserConverter.toUser(cursor)));
 		mongoConnection.close();
 		return users;

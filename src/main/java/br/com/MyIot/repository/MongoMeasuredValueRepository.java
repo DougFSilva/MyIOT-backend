@@ -64,7 +64,7 @@ public class MongoMeasuredValueRepository implements MeasuredValueRepository {
 	public List<MeasuredValue> findAllByDevice(MeasuringDevice device) {
 		List<MeasuredValue> measuredValues = new ArrayList<>();
 		MongoCursor<MongoMeasuredValueEntity> mongoCursor = getCollection(device.getId())
-				.find((Filters.eq("deviceId", new ObjectId(device.getId())))).iterator();
+				.find((Filters.eq("deviceId", new ObjectId(device.getId())))).batchSize(20000).iterator();
 		mongoConnection.close();
 		mongoCursor.forEachRemaining(cursor -> measuredValues.add(measuredConverter.toMeasuredValue(device, cursor)));
 		return measuredValues;

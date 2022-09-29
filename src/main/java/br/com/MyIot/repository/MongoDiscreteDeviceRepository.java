@@ -103,7 +103,7 @@ public class MongoDiscreteDeviceRepository implements DiscreteDeviceRepository {
 	public List<DiscreteDevice> findAll() {
 		List<DiscreteDevice> devices = new ArrayList<>();
 		MongoCursor<Document> mongoCursor = mongoConnection.connect().getDatabase().getCollection(collectionName, Document.class)
-				.aggregate(Arrays.asList(Aggregates.lookup("user", "userId", "_id", "user"))).iterator();
+				.aggregate(Arrays.asList(Aggregates.lookup("user", "userId", "_id", "user"))).batchSize(10000).iterator();
 		mongoCursor.forEachRemaining(cursor -> {
 			Document document = cursor.getList("user", Document.class).get(0);
 			List<Profile> profiles = document.getList("profiles", Document.class)
