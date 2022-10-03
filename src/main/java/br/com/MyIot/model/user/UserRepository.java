@@ -16,6 +16,8 @@ public interface UserRepository {
 	Optional<User> findByEmail(Email email);
 
 	List<User> findAll();
+	
+	List<User> findUsersToAprrove();
 
 	User setApproveRegistration(User user, boolean approved);
 }

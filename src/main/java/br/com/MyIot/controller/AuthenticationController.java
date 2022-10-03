@@ -41,7 +41,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(tokenDTO);
 
 		} catch (AuthenticationException e) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 

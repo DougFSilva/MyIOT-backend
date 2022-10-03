@@ -61,6 +61,11 @@ public class UserAdminController {
 	public ResponseEntity<List<UserDto>> findAll() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
+	
+	@GetMapping(value = "/to-approve")
+	public ResponseEntity<List<UserDto>> findUsersToApprove() {
+		return ResponseEntity.ok().body(service.findUsersToApprove());
+	}
 
 	@PutMapping(value = "/approve-registration/id={id}/{approved}")
 	public ResponseEntity<UserDto> setApprovedRegistration(@PathVariable String id, @PathVariable boolean approved) {

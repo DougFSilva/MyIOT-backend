@@ -48,7 +48,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private String tokenRecover(HttpServletRequest request) {
-		String headerToken = request.getHeader("Authorization"); // Busca por Authorization no hearder da requisição
+		String headerToken = request.getHeader("Authorization");
 		if (headerToken == null || headerToken.isEmpty() || !headerToken.startsWith("Bearer ")) {
 			String requestParameter = request.getParameter("token");
 			if(requestParameter != null && requestParameter.isEmpty()) {
@@ -56,7 +56,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 			}
 			return null;
 		}
-		return headerToken.substring(7, headerToken.length()); // Retorna somente o token, excluindo "Bearer "
+		return headerToken.substring(7, headerToken.length());
 	}
 
 }

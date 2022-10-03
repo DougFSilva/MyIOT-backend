@@ -45,18 +45,15 @@ public class MongoUserRepository implements UserRepository {
 	@Override
 	public User update(User user) {
 		MongoUserEntity mongoUserEntity = mongoUserConverter.toMongoUserEntity(user);
-		List<Document> profilesDocuments = mongoUserEntity.getProfiles()
-				.stream()
+		List<Document> profilesDocuments = mongoUserEntity.getProfiles().stream()
 				.map(profile -> new Document("type", profile.getType().getDescription()).append("authority",
 						profile.getAuthority()))
 				.collect(Collectors.toList());
-		 MongoUserEntity entity = (getCollection().findOneAndUpdate(
-				Filters.eq(new ObjectId(user.getId())),
+		MongoUserEntity entity = (getCollection().findOneAndUpdate(Filters.eq(new ObjectId(user.getId())),
 				Updates.combine(Updates.set("email", mongoUserEntity.getEmail()),
-								Updates.set("name", mongoUserEntity.getName()),
-								Updates.set("password", user.getPassword()),
-								Updates.set("approvedRegistration", mongoUserEntity.isApporvedRegistration()),
-								Updates.set("profiles", profilesDocuments)),
+						Updates.set("name", mongoUserEntity.getName()), Updates.set("password", user.getPassword()),
+						Updates.set("approvedRegistration", mongoUserEntity.isApporvedRegistration()),
+						Updates.set("profiles", profilesDocuments)),
 				new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER)));
 		mongoConnection.close();
 		return mongoUserConverter.toUser(entity);
@@ -97,6 +94,16 @@ public class MongoUserRepository implements UserRepository {
 	}
 
 	@Override
+	public List<User> findUsersToAprrove() {
+		List<User> users = new ArrayList<>();
+		MongoCursor<MongoUserEntity> mongoCursor = getCollection().find(Filters.eq("approvedRegistration", "false"))
+				.batchSize(10000).iterator();
+		mongoCursor.forEachRemaining(cursor -> users.add(mongoUserConverter.toUser(cursor)));
+		mongoConnection.close();
+		return users;
+	}
+
+	@Override
 	public User setApproveRegistration(User user, boolean approved) {
 		getCollection().updateOne(Filters.eq(new ObjectId(user.getId())),
 				Updates.set("approvedRegistration", approved));
@@ -106,8 +113,7 @@ public class MongoUserRepository implements UserRepository {
 	}
 
 	private MongoCollection<MongoUserEntity> getCollection() {
-		return mongoConnection.connect(new UserCodec()).getDatabase().getCollection("user",
-				MongoUserEntity.class);
+		return mongoConnection.connect(new UserCodec()).getDatabase().getCollection("user", MongoUserEntity.class);
 	}
 
 }

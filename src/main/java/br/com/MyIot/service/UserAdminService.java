@@ -99,12 +99,21 @@ public class UserAdminService {
 	public List<UserDto> findAll() {
 		return repository.findAll().stream().map(user -> new UserDto(user)).toList();
 	}
+	
+public List<UserDto> findUsersToApprove(){
+		return repository.findUsersToAprrove().stream().map(user -> new UserDto(user)).toList();
+	}
 
 	public UserDto setApproveRegistration(String id, boolean approved) {
 		User user = findById(id);
 		user.setApprovedRegistration(approved);
 		User updatedUser = repository.setApproveRegistration(user, approved);
-		mqttStandardClientService.enable(new MqttStandardClient(updatedUser));
+		if(approved) {
+			mqttStandardClientService.enable(new MqttStandardClient(updatedUser));
+		}else if(!approved) {
+			mqttStandardClientService.disable(new MqttStandardClient(updatedUser));
+		}
+		
 		return new UserDto(updatedUser);
 	}
 	
