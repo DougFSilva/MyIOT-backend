@@ -1,5 +1,12 @@
 package br.com.MyIot.model.device.analogOutputDevice;
 
+/**
+ * A interface <b>AnalogOutputDeviceRepository</b> define os métodos que a classe responsável pela persistência dos dispositivos do tipo
+ * <b>AnalogOutputDevice</b> deve implementar
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 import java.util.List;
 import java.util.Optional;
 

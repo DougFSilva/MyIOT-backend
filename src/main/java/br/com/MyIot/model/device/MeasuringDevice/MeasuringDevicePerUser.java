@@ -6,6 +6,13 @@ import br.com.MyIot.exception.UserDevicesLimitExceededException;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
 
+/**
+ * A classe <b>MeasuringDevicePerUser</b> faz a validação da quantidade de dispositivos do tipo <b>MeasuringDevice</b> permitido para cada
+ * usuário com perfil admin, gold ou silver 
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MeasuringDevicePerUser {
 

@@ -2,7 +2,12 @@ package br.com.MyIot.model.device.MeasuringDevice;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * A Classe <b>MeasuredValue</b> define os valores de medição pertencentes a um dispositivo do tipo <b>MeasuringDevice</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MeasuredValue {
 
 	private String id;

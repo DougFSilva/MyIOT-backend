@@ -1,7 +1,12 @@
 package br.com.MyIot.model.device;
 
 import br.com.MyIot.model.user.User;
-
+/**
+ * A Classe Abstrata <b>Device</b> define os parâmetros básicos de um dispositivo.
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public abstract class Device {
 
 	protected String id;

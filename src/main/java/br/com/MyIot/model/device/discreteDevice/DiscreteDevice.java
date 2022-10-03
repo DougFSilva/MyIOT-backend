@@ -2,7 +2,12 @@ package br.com.MyIot.model.device.discreteDevice;
 
 import br.com.MyIot.model.device.Device;
 import br.com.MyIot.model.user.User;
-
+/**
+ * A classe <b>DiscreteDevice</b> define um dispositivo a ser comandado por sinal discreto
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class DiscreteDevice extends Device {
 
 	private boolean status;

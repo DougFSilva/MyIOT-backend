@@ -1,8 +1,14 @@
 package br.com.MyIot.model.device.analogOutputDevice;
 
 import br.com.MyIot.model.device.Device;
-import br.com.MyIot.model.user.User;
 
+import br.com.MyIot.model.user.User;
+/**
+ * A classe <b>AnalogOutputDevice</b> define um dispositivo a ser comandado por sinal analógico.
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class AnalogOutputDevice extends Device {
 
 	private Integer output;
