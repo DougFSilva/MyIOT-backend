@@ -3,6 +3,7 @@ package br.com.MyIot.mqtt;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.MosquittoDynamicSecurity.dynsec.ACL.ACLType;
@@ -13,14 +14,11 @@ import br.com.MyIot.model.device.Device;
 
 @Service
 public class MqttDeviceRoleService {
+	
+	@Autowired
+	private DynSecPublisher publisher;
 
 	public void create(Device device) {
-		MqttProperties mqttProperties = new MqttProperties();
-		DynSecPublisher publisher = new DynSecPublisher(
-				mqttProperties.getUri(), 
-				mqttProperties.getAdminUsername(),
-				mqttProperties.getAdminPassword(), 
-				mqttProperties.getAdminClientId());
 		DynSecRole role = new DynSecRole("role_" + device.getUser().getEmail().getAddress());
 		List<DynSecACL> ACLs = new ArrayList<>();
 		ACLs.add(new DynSecACL(ACLType.PUBLISH_CLIENT_SEND, MqttTopic.getDeviceTopicToPersit(device), true));
@@ -34,12 +32,6 @@ public class MqttDeviceRoleService {
 	}
 	
 	public void delete(Device device) {
-		MqttProperties mqttProperties = new MqttProperties();
-		DynSecPublisher publisher = new DynSecPublisher(
-				mqttProperties.getUri(), 
-				mqttProperties.getAdminUsername(),
-				mqttProperties.getAdminPassword(), 
-				mqttProperties.getAdminClientId());
 		DynSecRole role = new DynSecRole("role_" + device.getUser().getEmail().getAddress());
 		List<DynSecACL> ACLs = new ArrayList<>();
 		ACLs.add(new DynSecACL(ACLType.PUBLISH_CLIENT_SEND, MqttTopic.getDeviceTopicToPersit(device), true));

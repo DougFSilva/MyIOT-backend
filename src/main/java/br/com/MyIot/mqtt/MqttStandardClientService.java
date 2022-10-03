@@ -1,5 +1,6 @@
 package br.com.MyIot.mqtt;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.MosquittoDynamicSecurity.dynsec.client.DynSecClient;
@@ -8,14 +9,11 @@ import br.com.MosquittoDynamicSecurity.dynsec.role.DynSecRole;
 
 @Service
 public class MqttStandardClientService {
+	
+	@Autowired
+	private DynSecPublisher publisher;
 
 	public void create(MqttStandardClient client) {
-		MqttProperties mqttProperties = new MqttProperties();
-		DynSecPublisher publisher = new DynSecPublisher(
-				mqttProperties.getUri(), 
-				mqttProperties.getAdminUsername(),
-				mqttProperties.getAdminPassword(), 
-				mqttProperties.getAdminClientId());
 		DynSecClient dynSecClient = new DynSecClient(client.getUsername(), client.getPassword());
 		DynSecRole role = new DynSecRole("role_" + client.getUsername());
 		publisher.addCommand(dynSecClient.createCommand())
@@ -26,12 +24,6 @@ public class MqttStandardClientService {
 	}
 
 	public void delete(MqttStandardClient client) {
-		MqttProperties mqttProperties = new MqttProperties();
-		DynSecPublisher publisher = new DynSecPublisher(
-				mqttProperties.getUri(), 
-				mqttProperties.getAdminUsername(),
-				mqttProperties.getAdminPassword(), 
-				mqttProperties.getAdminClientId());
 		DynSecClient dynSecClient = new DynSecClient(client.getUsername(), client.getPassword());
 		DynSecRole role = new DynSecRole("role_" + client.getUsername());
 		publisher.addCommand(role.deleteCommand())
@@ -40,23 +32,11 @@ public class MqttStandardClientService {
 	}
 
 	public void enable(MqttStandardClient client) {
-		MqttProperties mqttProperties = new MqttProperties();
-		DynSecPublisher publisher = new DynSecPublisher(
-				mqttProperties.getUri(),
-				mqttProperties.getAdminUsername(),
-				mqttProperties.getAdminPassword(), 
-				mqttProperties.getAdminClientId());
 		DynSecClient dynSecClient = new DynSecClient(client.getUsername(), client.getPassword());
 		publisher.addCommand(dynSecClient.enableCommand()).publish();
 	}
 
 	public void disable(MqttStandardClient client) {
-		MqttProperties mqttProperties = new MqttProperties();
-		DynSecPublisher publisher = new DynSecPublisher(
-				mqttProperties.getUri(), 
-				mqttProperties.getAdminUsername(),
-				mqttProperties.getAdminPassword(), 
-				mqttProperties.getAdminClientId());
 		DynSecClient dynSecClient = new DynSecClient(client.getUsername(), client.getPassword());
 		publisher.addCommand(dynSecClient.disableCommand()).publish();
 	}
