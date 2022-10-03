@@ -18,9 +18,6 @@ public class MongoConnection {
 	@Value("${mongodb.uri}")
 	private String uri;
 
-	@Value("${mongodb.database}")
-	private String database;
-
 	private MongoClient client;
 
 	public MongoConnection connect(Codec<?> codec) {
@@ -52,7 +49,7 @@ public class MongoConnection {
 	}
 
 	public MongoDatabase getDatabase() {
-		return client.getDatabase(database);
+		return client.getDatabase("iotProject");
 	}
 
 }
