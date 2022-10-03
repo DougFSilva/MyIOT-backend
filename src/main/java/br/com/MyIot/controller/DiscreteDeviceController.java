@@ -20,6 +20,13 @@ import br.com.MyIot.dto.device.DiscreteDeviceDto;
 import br.com.MyIot.dto.device.DiscreteDeviceForm;
 import br.com.MyIot.service.DiscreteDeviceService;
 
+/**
+ * A classe <b>DiscreteDeviceController</b> define os endpoints nos quais os usuários poderão gerenciar os dispositivos do tipo
+ * <b>DiscreteDevice</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/discrete-device")
 public class DiscreteDeviceController {

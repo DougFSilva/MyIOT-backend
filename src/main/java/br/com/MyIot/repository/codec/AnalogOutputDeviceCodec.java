@@ -12,6 +12,12 @@ import org.bson.codecs.EncoderContext;
 
 import br.com.MyIot.repository.entity.MongoAnalogOutputDeviceEntity;
 
+/**
+ * A classe <b>AnalogOutputDeviceCodec</b> define um codec para um objeto do tipo <b>AnalogOutputDevice</b> ser codificado e 
+ * decodificado quando se relaciona com o banco de dados MongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 public class AnalogOutputDeviceCodec implements CollectibleCodec<MongoAnalogOutputDeviceEntity> {
 
 	private Codec<Document> codec;

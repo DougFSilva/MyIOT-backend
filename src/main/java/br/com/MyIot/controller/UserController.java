@@ -18,6 +18,12 @@ import br.com.MyIot.dto.user.UserForm;
 import br.com.MyIot.dto.user.UserUpdatePasswordForm;
 import br.com.MyIot.service.UserService;
 
+/**
+ * A classe <b>UserController</b> define os endpoints nos quais os usuários poderão gerenciar a própria conta
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {

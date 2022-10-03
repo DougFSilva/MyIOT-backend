@@ -8,6 +8,12 @@ import br.com.MyIot.model.device.discreteDevice.DiscreteDevice;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.repository.entity.MongoDiscreteDeviceEntity;
 
+/**
+ * A classe <b>MongoDiscreteDeviceConverter</b> é responsável pela conversão
+ * entre objetos do tipo <b>DiscreteDevice</b> e <b>MongoDiscreteDeviceEntity</b>
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MongoDiscreteDeviceConverter {
 

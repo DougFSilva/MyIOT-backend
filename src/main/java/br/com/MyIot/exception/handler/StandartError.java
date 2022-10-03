@@ -1,7 +1,12 @@
 package br.com.MyIot.exception.handler;
 
 import java.io.Serializable;
-
+/**
+ * A classe <b>StandartError</b> representa um padrão de erro para ser encaminhado como resposta a uma solicitação http
+ * na ocorr~encia de uma Exception capturada pela classe <b>ExceptionHanlder</b>
+ * @since Out 2022
+ * @version 1.0
+ */
 public class StandartError implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -29,6 +29,12 @@ import br.com.MyIot.repository.config.MongoConnection;
 import br.com.MyIot.repository.converter.MongoAnalogOutputDeviceConverter;
 import br.com.MyIot.repository.entity.MongoAnalogOutputDeviceEntity;
 
+/**
+ * A classe <b>MongoAnalogOutputDeviceConverter</b> é uma classe repository que implementa a interface 
+ * <b>AnalogOutputDeviceRepository</b> e faz a persistência no banco de dados MongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 @Repository
 public class MongoAnalogOutputDeviceRepository implements AnalogOutputDeviceRepository {
 

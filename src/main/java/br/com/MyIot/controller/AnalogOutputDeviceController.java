@@ -19,7 +19,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.MyIot.dto.device.AnalogOutputDeviceDto;
 import br.com.MyIot.dto.device.AnalogOutputDeviceForm;
 import br.com.MyIot.service.AnalogOutputDeviceService;
-
+/**
+ * A classe <b>AnalogOutputDeviceController</b> define os endpoints nos quais os usuários poderão gerenciar os dispositivos do tipo
+ * <b>AnalogOutputDevice</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/analog-output-device")
 public class AnalogOutputDeviceController {

@@ -22,6 +22,13 @@ import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttSystemClientSubscriber;
 import br.com.MyIot.repository.config.MongoConnection;
 
+/**
+ * A classe <b>InitialConfiguration</b> que implementa a interface <b>ApplicationRunner</b> é responsável por fazer as configurações 
+ * iniciais na aplicação no momento da inicialização
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Configuration
 public class InitialConfiguration implements ApplicationRunner {
 	
@@ -52,17 +59,32 @@ public class InitialConfiguration implements ApplicationRunner {
 	@Autowired
 	private UserRepository userRepository;
 	
+	/**
+	 * Método implementado da interface <b>ApplicationRunner</b> que é executado no momento da inicialização da aplicação
+	 */
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		createUserMaster();
+		createMongoIndex();
+		mqttSystemClientSubscribe();
+	}
+	
+	/**
+	 * Método responsável por criar o usuário master no momento da inicialização da aplicação, caso o mesmo ainda não tenha sido
+	 * criado
+	 */
+	public void createUserMaster() {
 		if(userRepository.findByEmail(new Email(userMasterEmail)).isEmpty()) {
 			List<Profile> profiles = Arrays.asList(new Profile(ProfileType.ADMIN));
 			User user = new User(userMasterEmail, userMasterName, userMasterPassword, userMasterMqttPassword, profiles);
 			userRepository.create(user);
 		};
-		createMongoIndex();
-		mqttClient.connect();
 	}
 	
+	/**
+	 * Método responsável por criar as coleções "discreteDevice", "measuringDevice", "analogOutputDevice" e gerar índices
+	 * nas mesmas pelo parâmetro "userId", afim de melhorar o desempenho do banco de dados mongoDb no acesso a essas coleções
+	 */
 	public void createMongoIndex() {
 		MongoClient client = mongoConnection.getClient();
 		MongoIterable<String> listCollectionNames = mongoConnection.connect().getDatabase().listCollectionNames();
@@ -74,6 +96,14 @@ public class InitialConfiguration implements ApplicationRunner {
 			mongoConnection.getDatabase().getCollection(collection).createIndex(Indexes.ascending("userId"));
 		});
 		client.close();
+	}
+	
+	/**
+	 * Método responsável por fazer a aplicação se inscrever no tópico mqtt que receberá os dados a serem persistidos 
+	 * no banco de dados
+	 */
+	public void mqttSystemClientSubscribe() {
+		mqttClient.connect();
 	}
 
 }

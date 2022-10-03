@@ -2,6 +2,12 @@ package br.com.MyIot.mqtt;
 
 import br.com.MyIot.model.device.Device;
 
+/**
+ * A classe <b>MqttStandardClient</b> define um padrão para os tópicos utilizados no Broker Mqtt
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MqttTopic {
 
 	public static String getDeviceTopic(Device device) {

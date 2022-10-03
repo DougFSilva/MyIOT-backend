@@ -8,6 +8,12 @@ import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDevice;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.repository.entity.MongoAnalogOutputDeviceEntity;
 
+/**
+ * A classe <b>MongoAnalogOutputDeviceConverter</b> é responsável pela conversão
+ * entre objetos do tipo <b>AnalogOutputDevice</b> e <b>MongoAnalogOutputDeviceEntity</b>
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MongoAnalogOutputDeviceConverter {
 

@@ -11,8 +11,20 @@ import com.google.gson.JsonDeserializer;
 
 import br.com.MyIot.exception.MqttMessageConverterFailureException;
 
+/**
+ * A classe <b>MqttMessageConverter</b> é responsável por converter um objeto do tipo <b>MqttMessage</b> em 
+ * <b>AnalogOutputDeviceMqttMessage</b>, <b>DiscreteDeviceMqttMessage</b> ou  <b>MeasuredValueMqttMessage</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MqttMessageConverter {
 
+	/**
+	 * Método que recebe um objeto do tipo <b>MqttMessage</b> e converte para um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 * @param message
+	 * @return Retorna um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 */
 	public AnalogOutputDeviceMqttMessage toAnalogOutputDeviceMqttMessage(MqttMessage message) {
 		try {
 			Gson gson = new Gson();
@@ -23,6 +35,11 @@ public class MqttMessageConverter {
 
 	}
 
+	/**
+	 * Método que recebe um objeto do tipo <b>MqttMessage</b> e converte para um objeto do tipo <b>DiscreteDeviceMqttMessage</b>
+	 * @param message
+	 * @return Retorna um objeto do tipo <b>DiscreteDeviceMqttMessage</b>
+	 */
 	public DiscreteDeviceMqttMessage toDiscreteDeviceMqttMessage(MqttMessage message) {
 		try {
 			Gson gson = new Gson();
@@ -33,6 +50,11 @@ public class MqttMessageConverter {
 
 	}
 
+	/**
+	 * Método que recebe um objeto do tipo <b>MeasuredValueMqttMessage</b> e converte para um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 * @param message
+	 * @return Retorna um objeto do tipo <b>MeasuredValueMqttMessage</b>
+	 */
 	public MeasuredValueMqttMessage toMeasuredValueMqttMessage(MqttMessage message) {
 		try {
 			Gson gson = new GsonBuilder()

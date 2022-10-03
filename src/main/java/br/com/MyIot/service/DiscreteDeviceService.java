@@ -18,7 +18,13 @@ import br.com.MyIot.model.device.discreteDevice.DiscreteDeviceRepository;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
-
+/**
+ * A classe <b>MqttStandardClient</b> é uma classe service responsável pelo gerenciamento de dispositivos do tipo 
+ * <b>DiscreteDevice</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class DiscreteDeviceService {
 

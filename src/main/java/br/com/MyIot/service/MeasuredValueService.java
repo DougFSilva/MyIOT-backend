@@ -18,6 +18,13 @@ import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuringDeviceRepository;
 import br.com.MyIot.model.user.User;
 
+/**
+ * A classe <b>MeasuredValueService</b> é uma classe service responsável pelo gerenciamento valores de medição do tipo 
+ * <b>MeasuredValue</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MeasuredValueService {
 

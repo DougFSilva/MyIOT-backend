@@ -12,6 +12,12 @@ import org.bson.codecs.EncoderContext;
 
 import br.com.MyIot.repository.entity.MongoMeasuringDeviceEntity;
 
+/**
+ * A classe <b>MeasuringDeviceCodec</b> define um codec para um objeto do tipo <b>MeasuringDevice</b> ser codificado e 
+ * decodificado quando se relaciona com o banco de dados MongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MeasuringDeviceCodec implements CollectibleCodec<MongoMeasuringDeviceEntity> {
 
 	private Codec<Document> codec;

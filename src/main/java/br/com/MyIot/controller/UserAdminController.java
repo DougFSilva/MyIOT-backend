@@ -19,7 +19,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.MyIot.dto.user.UserDto;
 import br.com.MyIot.dto.user.UserAdminForm;
 import br.com.MyIot.service.UserAdminService;
-
+/**
+ * A classe <b>UserAdminController</b> define os endpoints que fazem o gerenciamento dos usuários e somente são acessíveis por
+ * usuários de perfil "ADMIN"
+ * do tipo <b>MeasuredValue</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/admin")
 @PreAuthorize("hasRole('ADMIN')")

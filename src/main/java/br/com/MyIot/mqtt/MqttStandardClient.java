@@ -2,6 +2,12 @@ package br.com.MyIot.mqtt;
 
 import br.com.MyIot.model.user.User;
 
+/**
+ * A classe <b>MqttStandardClient</b> define um tipo padrão de client para ser criado no Broker Mqtt
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MqttStandardClient {
 
 	private String id;

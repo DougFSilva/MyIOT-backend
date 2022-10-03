@@ -2,6 +2,12 @@ package br.com.MyIot.repository.entity;
 
 import org.bson.types.ObjectId;
 
+/**
+ * A classe <b>MongoAnalogOutputDeviceEntity</b> é uma entidade que representa um objeto do tipo <b>MongoAnalogOutputDevice</b> para ser 
+ * persistido no banco de dados mongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MongoAnalogOutputDeviceEntity {
 
 	private ObjectId id;

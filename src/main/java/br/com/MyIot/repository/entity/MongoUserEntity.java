@@ -7,6 +7,12 @@ import org.bson.types.ObjectId;
 
 import br.com.MyIot.repository.MongoProfile;
 
+/**
+ * A classe <b>MongoUserEntity</b> é uma entidade que representa um objeto do tipo <b>User</b> para ser persistido no banco de
+ * dados mongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MongoUserEntity {
 
 	private ObjectId id;

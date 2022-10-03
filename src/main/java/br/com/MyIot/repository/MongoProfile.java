@@ -4,6 +4,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import br.com.MyIot.model.user.ProfileType;
 
+/**
+ * A classe <b>MongoProfile</b> define um tipo de perfil para a classe <b>MongoUserEntity</b>
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MongoProfile implements GrantedAuthority{
 
 	private static final long serialVersionUID = 1L;

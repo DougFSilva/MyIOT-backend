@@ -24,6 +24,14 @@ import br.com.MyIot.service.AnalogOutputDeviceService;
 import br.com.MyIot.service.DiscreteDeviceService;
 import br.com.MyIot.service.MeasuredValueService;
 
+/**
+ * A classe <b>MqttStandardClient</b> é uma classe service responsável por fazer a inscrição no tópico mqtt responsável
+ * por receber as mensagens a serem persistidas no banco de dados
+ * <b>MqttStandardClient</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MqttSystemClientSubscriber implements MqttCallback {
 
@@ -51,6 +59,10 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 	@Autowired 
 	private MqttSystemClientService mqttClientService;
 	
+	/**
+	 * Método que conecta ao broker mqtt e se inscreve no tópico que receberá as mensagens a serem persistidas no banco de dados
+	 * @return Retorna a própria classe para permitir o encadeamento de métodos
+	 */
 	public MqttSystemClientSubscriber connect() {
 		mqttClientService.create(clientId, username, password);
 		try {
@@ -77,12 +89,20 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 		return this;
 	}
 
+	/**
+	 * Método implementado da interface <b>MqttCallback</b> que é chamado quando a conexão é perdida, e assim chama novamente o
+	 * método conect() para reconectar
+	 */
 	@Override
 	public void connectionLost(Throwable cause) {
 		System.out.println("Connection lost, cause: " + cause);
 		this.connect();
 	}
 
+	/**
+	 * Método implementado da interface <b>MqttCallback</b> que é chamado quando uma mensagem é recebida, então essa mensagem é
+	 * analisada e reenviada para as classes responsáveis por fazer a conversão da mensagem e então persistir no banco de dados
+	 */
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		String[] topicSplit = topic.split("/");
@@ -111,7 +131,7 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken token) {
-		
+		System.out.println(token);
 	}
 
 }

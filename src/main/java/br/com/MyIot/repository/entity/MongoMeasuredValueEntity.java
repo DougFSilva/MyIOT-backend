@@ -5,6 +5,12 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
+/**
+ * A classe <b>MongoMeasuredValueEntity</b> é uma entidade que representa um objeto do tipo <b>MongoMeasuredValue</b> para ser 
+ * persistido no banco de dados mongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 public class MongoMeasuredValueEntity {
 	
 	private ObjectId id;

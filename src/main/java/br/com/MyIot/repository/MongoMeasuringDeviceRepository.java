@@ -31,6 +31,12 @@ import br.com.MyIot.repository.config.MongoConnection;
 import br.com.MyIot.repository.converter.MongoMeasuringDeviceConverter;
 import br.com.MyIot.repository.entity.MongoMeasuringDeviceEntity;
 
+/**
+ * A classe <b>MongoMeasuringDeviceRepository</b> é uma classe repository que implementa a interface 
+ * <b>MeasuringDeviceRepository</b> e faz a persistência no banco de dados MongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 @Repository
 public class MongoMeasuringDeviceRepository implements MeasuringDeviceRepository {
 

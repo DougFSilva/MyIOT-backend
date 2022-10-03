@@ -10,6 +10,11 @@ import br.com.MyIot.model.user.User;
 import br.com.MyIot.repository.MongoProfile;
 import br.com.MyIot.repository.entity.MongoUserEntity;
 
+/**
+ * A classe <b>MongoUserConverter</b> é responsável pela conversão entre objetos do tipo <b>User</b> e <b>MongoUserEntity</b>
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MongoUserConverter {
 

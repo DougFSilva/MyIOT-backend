@@ -15,6 +15,12 @@ import br.com.MyIot.exception.UnknownHostException;
 import br.com.MyIot.exception.UserDevicesLimitExceededException;
 import br.com.MyIot.exception.UserNotApprovedException;
 
+/**
+ * A classe <b>ExceptionHandler</b> é uma classe controller que captura as exceções do sistema e retorna essa exceção como
+ * resposta da requisição http.
+ * @since Out 2022
+ * @version 1.0
+ */
 @ControllerAdvice
 public class ExceptionHandler {
 

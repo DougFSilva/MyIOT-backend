@@ -12,6 +12,12 @@ import br.com.MosquittoDynamicSecurity.dynsec.publisher.DynSecPublisher;
 import br.com.MosquittoDynamicSecurity.dynsec.role.DynSecRole;
 import br.com.MyIot.model.device.Device;
 
+/**
+ * A classe <b>MqttDeviceRoleService</b> é uma classe service responsável por fazer o gerenciamento de roles no Broker Mqtt
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MqttDeviceRoleService {
 	

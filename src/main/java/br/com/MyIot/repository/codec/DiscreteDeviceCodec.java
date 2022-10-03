@@ -12,6 +12,12 @@ import org.bson.codecs.EncoderContext;
 
 import br.com.MyIot.repository.entity.MongoDiscreteDeviceEntity;
 
+/**
+ * A classe <b>DiscreteDeviceCodec</b> define um codec para um objeto do tipo <b>DiscreteDevice</b> ser codificado e 
+ * decodificado quando se relaciona com o banco de dados MongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 public class DiscreteDeviceCodec implements CollectibleCodec<MongoDiscreteDeviceEntity> {
 
 	private Codec<Document> codec;

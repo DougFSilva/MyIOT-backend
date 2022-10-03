@@ -8,6 +8,12 @@ import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.repository.entity.MongoMeasuringDeviceEntity;
 
+/**
+ * A classe <b>MongoMeasuringDeviceConverter</b> é responsável pela conversão entre objetos do tipo <b>MeasuringDevice</b>
+ * e <b>MongoMeasuringDeviceEntity</b>
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MongoMeasuringDeviceConverter {
 

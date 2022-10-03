@@ -26,6 +26,12 @@ import br.com.MyIot.model.user.password.PasswordManager;
 import br.com.MyIot.mqtt.MqttStandardClient;
 import br.com.MyIot.mqtt.MqttStandardClientService;
 
+/**
+ * A classe <b>UserAdminService</b> é uma classe service responsável da conta pelo próprio usuário da aplicação
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping
 public class UserService {

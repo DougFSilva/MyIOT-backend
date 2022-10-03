@@ -19,6 +19,12 @@ import br.com.MyIot.dto.TokenDto;
 import br.com.MyIot.dto.user.LoginForm;
 import br.com.MyIot.model.user.User;
 
+/**
+ * A classe <b>AuthenticationController</b> define os endpoints para fazer login na aplicação
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/auth")
 @PreAuthorize("permitAll()")

@@ -22,6 +22,14 @@ import br.com.MyIot.service.DiscreteDeviceService;
 import br.com.MyIot.service.MeasuringDeviceService;
 import br.com.MyIot.service.UserAdminService;
 
+/**
+ * A classe <b>MqttController</b> define os endpoints que fazem o gerenciamento de clients e roles mqtt e somente
+ * são acessíveis por usuários de perfil "ADMIN"
+ * do tipo <b>MeasuredValue</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/mqtt")
 @PreAuthorize("hasRole('ADMIN')")

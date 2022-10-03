@@ -15,20 +15,38 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/**
+ * A classe <b>WebSocketConfiguration</b> implementa a interface <b>WebSocketMessageBrokerConfigurer</b> é responsável pela
+ * configuração da conexão websocket
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
+	/**
+	 * Método implementado da interface <b>WebSocketMessageBrokerConfigurer</b> que registra o endpoint da conexão websocket
+	 * e seta a origem permitida
+	 */
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/myiot-websocket").setAllowedOrigins("http://localhost:4200").withSockJS();
 	}
 
+	/**
+	 * Método implementado da interface <b>WebSocketMessageBrokerConfigurer</b> que configura o Broker
+	 */
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		registry.setApplicationDestinationPrefixes("/app").enableSimpleBroker("/queue");
 	}
 
+	/**
+	 * Método implementado da interface <b>WebSocketMessageBrokerConfigurer</b> que personaliza o canal de conexão,
+	 * buscando o usuário autenticado e setando o mesmo no canal, permitindo uma conexão privada de websocket
+	 */
 	@Override
 	public void configureClientInboundChannel(ChannelRegistration registration) {
 		 registration.interceptors(new ChannelInterceptor() {

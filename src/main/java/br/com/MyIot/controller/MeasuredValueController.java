@@ -19,6 +19,13 @@ import br.com.MyIot.dto.device.MeasuredValueDto;
 import br.com.MyIot.dto.device.MeasuredValueForm;
 import br.com.MyIot.service.MeasuredValueService;
 
+/**
+ * A classe <b>MeasuredValueController</b> define os endpoints nos quais os usuários poderão gerenciar os valores de medição
+ * do tipo <b>MeasuredValue</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/measured-value")
 public class MeasuredValueController {

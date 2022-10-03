@@ -21,6 +21,12 @@ import br.com.MyIot.repository.config.MongoConnection;
 import br.com.MyIot.repository.converter.MongoMeasuredValueConverter;
 import br.com.MyIot.repository.entity.MongoMeasuredValueEntity;
 
+/**
+ * A classe <b>MongoMeasuredValueRepository</b> é uma classe repository que implementa a interface 
+ * <b>MeasuredValueRepository</b> e faz a persistência no banco de dados MongoDb
+ * @since Out 2022
+ * @version 1.0
+ */
 @Repository
 public class MongoMeasuredValueRepository implements MeasuredValueRepository {
 

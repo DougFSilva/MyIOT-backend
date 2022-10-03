@@ -20,6 +20,13 @@ import br.com.MyIot.dto.device.MeasuringDeviceDto;
 import br.com.MyIot.dto.device.MeasuringDeviceForm;
 import br.com.MyIot.service.MeasuringDeviceService;
 
+/**
+ * A classe <b>MeasuringDeviceController</b> define os endpoints nos quais os usuários poderão gerenciar os dispositivos do tipo
+ * <b>MeasuringDevice</b>
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @RestController
 @RequestMapping(value = "/measuring-device")
 public class MeasuringDeviceController {

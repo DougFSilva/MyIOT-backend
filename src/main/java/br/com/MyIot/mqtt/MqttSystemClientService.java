@@ -12,6 +12,12 @@ import br.com.MosquittoDynamicSecurity.dynsec.client.DynSecClient;
 import br.com.MosquittoDynamicSecurity.dynsec.publisher.DynSecPublisher;
 import br.com.MosquittoDynamicSecurity.dynsec.role.DynSecRole;
 
+/**
+ * A classe <b>MqttSystemClientService</b> é uma classe service responsável por fazer o gerenciamento do client mqtt da acpliacação
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 @Service
 public class MqttSystemClientService {
 
