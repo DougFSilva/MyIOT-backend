@@ -1,5 +1,11 @@
 package br.com.MyIot.model.user;
 
+/**
+ * O Enum <b>ProfileType</b> define os tipos possíveis de perfil
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public enum ProfileType {
 
 	ADMIN(1, "ROLE_ADMIN"), GOLD_USER(2, "ROLE_GOLD_USER"), SILVER_USER(3, "ROLE_SILVER_USER");

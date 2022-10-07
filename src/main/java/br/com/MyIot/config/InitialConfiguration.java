@@ -19,6 +19,7 @@ import br.com.MyIot.model.user.Profile;
 import br.com.MyIot.model.user.ProfileType;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.model.user.UserRepository;
+import br.com.MyIot.model.user.password.PasswordManager;
 import br.com.MyIot.mqtt.MqttSystemClientSubscriber;
 import br.com.MyIot.repository.config.MongoConnection;
 
@@ -34,7 +35,7 @@ public class InitialConfiguration implements ApplicationRunner {
 	
 	@Value("${mqtt.uri}")
 	private String mqttUri;
-
+	
 	@Value("${user.master.email}")
 	private String userMasterEmail;
 
@@ -59,6 +60,9 @@ public class InitialConfiguration implements ApplicationRunner {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private PasswordManager passwordManager;
+	
 	/**
 	 * Método implementado da interface <b>ApplicationRunner</b> que é executado no momento da inicialização da aplicação
 	 */
@@ -67,6 +71,7 @@ public class InitialConfiguration implements ApplicationRunner {
 		createUserMaster();
 		createMongoIndex();
 		mqttSystemClientSubscribe();
+		
 	}
 	
 	/**
@@ -76,7 +81,8 @@ public class InitialConfiguration implements ApplicationRunner {
 	public void createUserMaster() {
 		if(userRepository.findByEmail(new Email(userMasterEmail)).isEmpty()) {
 			List<Profile> profiles = Arrays.asList(new Profile(ProfileType.ADMIN));
-			User user = new User(userMasterEmail, userMasterName, userMasterPassword, userMasterMqttPassword, profiles);
+			String password = passwordManager.validateAndEncode(userMasterPassword);
+			User user = new User(userMasterEmail, userMasterName, password, userMasterMqttPassword, profiles);
 			userRepository.create(user);
 		};
 	}

@@ -3,6 +3,12 @@ package br.com.MyIot.model.user;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A interface <b>UserRepository</b> define os métodos que a classe responsável pela persistência dos usuários deve implementar
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public interface UserRepository {
 
 	String create(User user);

@@ -8,6 +8,12 @@ import java.util.Objects;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * A Classe <b>User</b> define um usuário do sistema 
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class User implements UserDetails{
 
 	private static final long serialVersionUID = 1L;

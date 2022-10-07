@@ -1,14 +1,16 @@
 package br.com.MyIot.repository.config;
 
+import java.util.Arrays;
+
 import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -21,8 +23,11 @@ import com.mongodb.client.MongoDatabase;
 @Service
 public class MongoConnection {
 
-	@Value("${mongodb.uri}")
-	private String uri;
+	@Value("${mongodb.host}")
+	private String host;
+	
+	@Value("${mongodb.port}")
+	private Integer port;
 	
 	@Value("${mongodb.username}")
 	private String username;
@@ -44,8 +49,8 @@ public class MongoConnection {
 		CodecRegistry codecRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
 				CodecRegistries.fromCodecs(codec));
 		MongoClientSettings clientSettings = MongoClientSettings.builder()
-				.applyConnectionString(new ConnectionString(uri))
-				.credential(MongoCredential.createCredential(username, database, password.toCharArray()))
+				.applyToClusterSettings(builder ->  builder.hosts(Arrays.asList(new ServerAddress(host, port))))
+				.credential(MongoCredential.createCredential(username,"admin", password.toCharArray()))
 				.codecRegistry(codecRegistry)
 				.build();
 		client = MongoClients.create(clientSettings);
@@ -58,8 +63,8 @@ public class MongoConnection {
 	 */
 	public MongoConnection connect() {
 		MongoClientSettings clientSettings = MongoClientSettings.builder()
-				.applyConnectionString(new ConnectionString(uri))
-				.credential(MongoCredential.createCredential(username, database, password.toCharArray()))
+				.applyToClusterSettings(builder ->  builder.hosts(Arrays.asList(new ServerAddress(host, port))))
+				.credential(MongoCredential.createCredential(username,"admin", password.toCharArray()))
 				.build();
 		client = MongoClients.create(clientSettings);
 		return this;
@@ -73,8 +78,12 @@ public class MongoConnection {
 		return client;
 	}
 
-	public String getUri() {
-		return uri;
+	public String getHost() {
+		return host;
+	}
+	
+	public Integer getPort() {
+		return port;
 	}
 
 	public MongoDatabase getDatabase() {

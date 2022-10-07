@@ -85,6 +85,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>MyIot</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

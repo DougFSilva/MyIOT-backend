@@ -1,7 +1,12 @@
 package br.com.MyIot.model.user;
 
 import org.springframework.security.core.GrantedAuthority;
-
+/**
+ * A classe <b>Profile</b> define um perfil para acesso ao sistema
+ * @author Douglas Ferreira da Silva
+ * @since Out 2022
+ * @version 1.0
+ */
 public class Profile implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
