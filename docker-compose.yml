@@ -4,8 +4,8 @@ services:
     image: mongo
     container_name: mongodb
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongoAdmin
-      - MONGO_INITDB_ROOT_PASSWORD=mongoAdmin
+      - MONGO_INITDB_ROOT_USERNAME=username # Usuário admin do mongo
+      - MONGO_INITDB_ROOT_PASSWORD=password # Senha do usuário admin do mongo
     networks:
       - myiot-bridge
     ports:
@@ -33,16 +33,18 @@ services:
     environment:
       - MONGODB_HOST=mongodb
       - MONGODB_PORT=27017
-      - MONGODB_USERNAME=mongoAdmin
-      - MONGODB_PASSWORD=mongoAdmin
-      - MONGODB_DATABASE=iotProject
-      - USER_MASTER_PASSWORD=Master@123
-      - USER_MASTER_MQTTPASSWORD=8ae4bd82-7403-4d7e-b5b3-1f48b5328a50
+      - MONGODB_USERNAME=username # Usuário admin do mongo
+      - MONGODB_PASSWORD=password # Senha do usuário admin do mongo
+      - MONGODB_DATABASE=myiot # Nome do database
+      - USER_MASTER_PASSWORD=Master@123 # Senha do usuário master do sistema
+      - USER_MASTER_MQTTPASSWORD=8ae4bd82-7403-4d7e-b5b3-1f48b5328a50 # Senha do client gerado no broker mqtt para o usuário master do sistema
       - MQTT_URI=tcp://mqtt:1883
-      - MQTT_SYSTEM_PASSWORD=System@123
-      - MQTT_DYNSEC_USERNAME=dynsec
-      - MQTT_DYNSEC_PASSWORD=Dynsec@123
-      - JWT_SECRET=PalavraSecretaParaGeracaoDeJWTTOken
+      - MQTT_SYSTEM_PASSWORD=System@123 # Senha do client mqtt para que o sistema acesse o broker mosquitto
+      - MQTT_DYNSEC_USERNAME=dynsec # Usuário admin do dynamic security do broker mosquitto. Deve ser configurada também no Dockerfile da
+                                    # geração da imagem do container mosquitto, encontrado na pasta "mosquitto"
+      - MQTT_DYNSEC_PASSWORD=Dynsec@123 # Senha do usuário admin do dynamic security do broker mosquitto. Assim como o username, este deve
+                                        # ser configurado também no Dockerfile da geração da imagem do container mosquitto, na pasta "mosquitto"
+      - JWT_SECRET=PalavraSecretaParaGeracaoDeJWTTOken # String secreta para geração do token JWT 
     depends_on:
       - mosquitto
       - mongodb
