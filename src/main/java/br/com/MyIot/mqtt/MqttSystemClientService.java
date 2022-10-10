@@ -24,17 +24,25 @@ public class MqttSystemClientService {
 	@Autowired
 	private DynSecPublisher publisher;
 
-	public void create(String clientId, String username, String password) {
-		DynSecClient dynSecClient = new DynSecClient(clientId, username, password);
+	public void create(String username, String password) {
+		DynSecClient dynSecClient = new DynSecClient(username, password);
 		DynSecRole role = new DynSecRole("role_" + username);
-		publisher.addCommand(dynSecClient.createWithIdCommand()).addCommand(role.createCommand())
-				.addCommand(dynSecClient.addRoleCommand(role)).publish();
-		List<ACLType> ACLs = Arrays.asList(ACLType.PUBLISH_CLIENT_RECEIVE, ACLType.PUBLISH_CLIENT_SEND,
-				ACLType.SUBSCRIBE_LITERAL, ACLType.SUBSCRIBE_PATTERN, ACLType.UNSUBSCRIBE_LITERAL,
+		publisher.addCommand(dynSecClient.createCommand())
+				 .addCommand(role.createCommand())
+				 .addCommand(dynSecClient.addRoleCommand(role))
+				 .publish();
+		List<ACLType> ACLsToSubscribe = Arrays.asList(
+				ACLType.SUBSCRIBE_LITERAL, 
+				ACLType.SUBSCRIBE_PATTERN, 
+				ACLType.UNSUBSCRIBE_LITERAL,
 				ACLType.UNSUBSCRIBE_PATTERN);
-		String topic = MqttTopic.getSystemTopic();
-		ACLs.forEach(ACL -> {
-			DynSecACL dynSecACL = new DynSecACL(ACL, topic, true);
+		List<ACLType> ACLsToPublish = Arrays.asList(ACLType.PUBLISH_CLIENT_RECEIVE, ACLType.PUBLISH_CLIENT_SEND);
+		ACLsToSubscribe.forEach(ACL -> {
+			DynSecACL dynSecACL = new DynSecACL(ACL, MqttTopic.getSystemTopicToSubscribe(), true);
+			publisher.addCommand(role.addRoleACLCommand(dynSecACL));
+		});
+		ACLsToPublish.forEach(ACL -> {
+			DynSecACL dynSecACL = new DynSecACL(ACL, MqttTopic.getSystemTopicToPublish(), true);
 			publisher.addCommand(role.addRoleACLCommand(dynSecACL));
 		});
 		publisher.publish();

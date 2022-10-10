@@ -66,6 +66,12 @@ public class DiscreteDeviceController {
 		return ResponseEntity.ok().body(service.updateById(id, form));
 	}
 	
+	@PutMapping(value = "/id={id}/status={status}")
+	public ResponseEntity<Void> publishStatusOnBrokerMqtt(@PathVariable String id, @PathVariable boolean status){
+		service.publishOnBrokerMqtt(id, status);
+		return ResponseEntity.ok().build();
+	}
+	
 	@Operation(summary = "Buscar dispositivo de sinal discreto", description = "Buscar um dispositivo de sinal discreto no sistema")
 	@GetMapping(value = "/id={id}")
 	public ResponseEntity<DiscreteDeviceDto> findById(@PathVariable String id) {

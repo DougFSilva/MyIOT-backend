@@ -38,9 +38,6 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 	@Value("${mqtt.uri}")
 	private String uri;
 	
-	@Value("${mqtt.system.clientId}")
-	private String clientId;
-
 	@Value("${mqtt.system.username}")
 	private String username;
 
@@ -64,9 +61,9 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 	 * @return Retorna a própria classe para permitir o encadeamento de métodos
 	 */
 	public MqttSystemClientSubscriber connect() {
-		mqttClientService.create(clientId, username, password);
+		mqttClientService.create(username, password);
 		try {
-			MqttClient client = new MqttClient(uri, clientId, new MqttDefaultFilePersistence());
+			MqttClient client = new MqttClient(uri, "", new MqttDefaultFilePersistence());
 			MqttConnectOptions options = new MqttConnectOptions();
 			options.setUserName(username);
 			options.setPassword(password.toCharArray());
@@ -77,7 +74,7 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 			if (client.isConnected()) {
 				System.out.println("Mqtt Connected!");
 				try {
-					client.subscribe(MqttTopic.getSystemTopic(), 1);
+					client.subscribe(MqttTopic.getSystemTopicToSubscribe(), 1);
 				} catch (MqttException e) {
 					throw new MqttFailException("Impossible subscribe, cause: " + e.getMessage());
 				}

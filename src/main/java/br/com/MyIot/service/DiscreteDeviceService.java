@@ -3,9 +3,12 @@ package br.com.MyIot.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.JsonObject;
 
 import br.com.MyIot.dto.device.DiscreteDeviceDto;
 import br.com.MyIot.dto.device.DiscreteDeviceForm;
@@ -18,6 +21,8 @@ import br.com.MyIot.model.device.discreteDevice.DiscreteDeviceRepository;
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
+import br.com.MyIot.mqtt.MqttSystemClientPublisher;
+import br.com.MyIot.mqtt.MqttTopic;
 /**
  * A classe <b>MqttStandardClient</b> é uma classe service responsável pelo gerenciamento de dispositivos do tipo 
  * <b>DiscreteDevice</b>
@@ -42,6 +47,9 @@ public class DiscreteDeviceService {
 	
 	@Autowired
 	private WebSocketMessager messager;
+	
+	@Autowired
+	private MqttSystemClientPublisher publisher;
 
 	public String create(DiscreteDeviceForm form) {
 		User autenticatedUser = getAuthenticatedUser();
@@ -108,6 +116,15 @@ public class DiscreteDeviceService {
 
 	public List<DiscreteDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new DiscreteDeviceDto(device)).toList();
+	}
+	
+	public void publishOnBrokerMqtt(String deviceId, boolean status) {
+		String topic = MqttTopic.getDeviceTopic(DiscreteDevice.class, deviceId);
+		JsonObject json = new JsonObject();
+		json.addProperty("status", status);;
+		MqttMessage message = new MqttMessage();
+		message.setPayload(json.toString().getBytes());
+		publisher.publish(topic, message);
 	}
 	
 	private User getAuthenticatedUser() {
