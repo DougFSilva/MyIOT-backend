@@ -77,7 +77,17 @@ Com a API em execução, acesse o endpoint **"/swagger-ui/index.html"** e acesse
     **/user/queue/message/*<.Id do dispositivo.>***
 
 
+## 🛠️Construído com
 
+* Spring boot
+* Spring Security
+* Json web token JWT
+* MongoDb
+* Websocket
+* Eclipse Mosquitto
+---
+## ✒️ Autor
+* Douglas Ferreira da Silva
 
 
 
