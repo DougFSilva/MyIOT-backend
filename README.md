@@ -84,6 +84,8 @@ Com a API em execução, acesse o endpoint **"/swagger-ui/index.html"** e acesse
 * Json web token JWT
 * MongoDb
 * Websocket
+* Docker
+* Docker compose
 * Eclipse Mosquitto
 * OpenAPI
 ---
