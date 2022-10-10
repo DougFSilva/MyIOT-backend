@@ -85,6 +85,7 @@ Com a API em execução, acesse o endpoint **"/swagger-ui/index.html"** e acesse
 * MongoDb
 * Websocket
 * Eclipse Mosquitto
+* OpenAPI
 ---
 ## ✒️ Autor
 * Douglas Ferreira da Silva
