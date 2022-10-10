@@ -1,5 +1,6 @@
 package br.com.MyIot.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -25,6 +26,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
+	
+	@Value("${websocket.allowedOrigin}")
+	private String webSocketOrigin;
 
 	/**
 	 * Método implementado da interface <b>WebSocketMessageBrokerConfigurer</b> que registra o endpoint da conexão websocket
@@ -32,7 +36,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 	 */
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/myiot-websocket").setAllowedOrigins("http://localhost:4200").withSockJS();
+		registry.addEndpoint("/myiot-websocket").setAllowedOrigins(webSocketOrigin).withSockJS();
 	}
 
 	/**

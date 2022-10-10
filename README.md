@@ -6,7 +6,7 @@ Essas instruções permitiram que você instale e utilize a API em sua máquina 
 
 ## ⚙️ **Configurando e executando**
 
-## 1. Configurar usuário e senha do Mosquitto para acesso às configurações de segurância dinâmica
+## 1. Configurar usuário e senha do Mosquitto dynamic security
 
 Baixe a pasta completa do projeto, abra pasta mosquitto e o arquivo Dockerfile. Neste arquivo, configure como desejar as variáveis ADMIN_USERNAME e ADMIN_PASS.
 
@@ -34,9 +34,47 @@ Com o terminal aberto na pasta raiz do projeto execute o Docker Compose.
 ```
 docker compose up
 ```
-## 🔧 **Utilizando**
-  
+## 🔧 **Entendendo e utilizando**
 
+## 1. Veja a documentação
+
+Com a API em execução, acesse o endpoint **"/swagger-ui/index.html"** e acesse a documentação com todos os endpoits disponíveis e suas descrições.
+
+## 2. Informações gerais
+* Ao criar um usuário, o mesmo só poderá criar dispositivos caso tenha sido aprovado. A aprovação é realizada pelo usuário **Master** criado automaticamente ao iniciar a aplicação, ou por qualquer usuário de perfil **ADMIN**. Por padrão todo usuário criado possui um perfim **SILVER_USER**, e a alteração do perfil para **ADMIN** ou **GOLD_USER** somente pode seer realizada pelo usuário **Master** ou qualquer outro usuário de perfil **ADMIN**. Lembrando que as credenciais do usuário **Master** foram configuradas no item **2. Configurar as variáveis de ambiente**. Automaticamente ao ser criado e aprovado, será gerado uma senha para acesso ao Broker Mosquitto. Para verificar a senha o usuário deve fazer login no sistema e e acessar o endpoint **"/user"** com o verbo **GET**
+
+* Cada usuário pode cadastrar uma certa quantidade de dispositivos, dependendo de seu perfil, sendo:
+
+   - **Dispositivo de controle analógico**: **ADMIN**(25), **GOLD_USER**(12), **SILVER_USER**(6)  
+
+   - **Dispositivo de sinal discreto**: **ADMIN**(25), **GOLD_USER**(12), **SILVER_USER**(6)  
+
+   - **Dispositivo de medição**: **ADMIN**(20), **GOLD_USER**(8), **SILVER_USER**(4)  
+
+* Ao cadastrar um dispositivo, será gerado automaticamente uma permissão no Broker Mosquitto para que o usuário acesse o tópico do dispositivo. Somente o usuário tem acesso a esse tópico. Os tópicos seguem o seguinte padrão:
+    
+    - **iot/*<.tipo de dispositivo.>*/*<.id do dispositivo.>*** - Permite publicar e se inscrever, porém não persiste no banco de dados
+
+    - **iot/*<.tipo de dispositivo.>*/*<.id do dispositivo.>*/ persist** - Permite publicar e se inscrever e persiste no banco de dados
+
+    Onde o **tipo do dispositivo** pode ser:
+    
+    - **AnalogOutputDevice** - Para dispositivo de comando analógico
+    - **DiscreteDevice** - Para dispositivos de sinais discretos
+    - **MeasuringDevice** - Para dispositivos de medição
+
+
+    E o **id do dispositivo** é número de identificação do dispositivo, que pode ser obtido nos endpoints **/analog-output-device/all**, **/discrete-device/all** e **/measuring-device/all**
+
+    Exemplo de tópico para um dispositivo de sinal discreto, com id 112d54s6aa8s95s48s:
+
+    **iot/DiscreteDevice/112d54s6aa8s95s48s** 
+
+     **iot/DiscreteDevice/112d54s6aa8s95s48s/persist**
+
+* Para acessar a aplicação via websocket é preciso fazer uma conexão SocketJs no endpoint **"/myiot-websocket/?token=*<.token JWT.>*"**, onde <.token JWT.> é o token JWT recebido ao autenticar. Então se inscrever no tópico referente ao dispositivo a ser acessado, da seguinte forma:
+
+    **/user/queue/message/*<.Id do dispositivo.>***
 
 
 

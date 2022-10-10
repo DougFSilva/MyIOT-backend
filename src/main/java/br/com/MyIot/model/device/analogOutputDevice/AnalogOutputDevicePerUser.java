@@ -20,11 +20,11 @@ public class AnalogOutputDevicePerUser {
 		ProfileType profileType = user.getProfiles().stream()
 				.sorted((p1, p2) -> Long.compare(p1.getType().getCod(), p2.getType().getCod())).findFirst().get()
 				.getType();
-		if ((profileType == ProfileType.ADMIN) && (devicesCount <= 20)) {
+		if ((profileType == ProfileType.ADMIN) && (devicesCount <= 25)) {
 			return true;
-		} else if ((profileType == ProfileType.GOLD_USER) && (devicesCount < 8)) {
+		} else if ((profileType == ProfileType.GOLD_USER) && (devicesCount < 12)) {
 			return true;
-		} else if ((profileType == ProfileType.SILVER_USER) && (devicesCount < 4)) {
+		} else if ((profileType == ProfileType.SILVER_USER) && (devicesCount < 6)) {
 			return true;
 		} else {
 			throw new UserDevicesLimitExceededException("Limit of devices per user exceeded!");

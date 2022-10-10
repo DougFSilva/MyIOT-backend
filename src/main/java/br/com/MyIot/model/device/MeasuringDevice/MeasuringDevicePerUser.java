@@ -20,11 +20,11 @@ public class MeasuringDevicePerUser {
 		ProfileType profileType = user.getProfiles().stream()
 				.sorted((p1, p2) -> Long.compare(p1.getType().getCod(), p2.getType().getCod())).findFirst().get()
 				.getType();
-		if ((profileType == ProfileType.ADMIN) && (devicesCount <= 25)) {
+		if ((profileType == ProfileType.ADMIN) && (devicesCount <= 20)) {
 			return true;
-		} else if ((profileType == ProfileType.GOLD_USER) && (devicesCount < 12)) {
+		} else if ((profileType == ProfileType.GOLD_USER) && (devicesCount < 8)) {
 			return true;
-		} else if ((profileType == ProfileType.SILVER_USER) && (devicesCount < 6)) {
+		} else if ((profileType == ProfileType.SILVER_USER) && (devicesCount < 4)) {
 			return true;
 		} else {
 			throw new UserDevicesLimitExceededException("Limit of devices per user exceeded!");
