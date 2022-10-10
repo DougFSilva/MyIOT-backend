@@ -18,6 +18,7 @@ import br.com.MyIot.config.security.TokenService;
 import br.com.MyIot.dto.TokenDto;
 import br.com.MyIot.dto.user.LoginForm;
 import br.com.MyIot.model.user.User;
+import io.swagger.v3.oas.annotations.Operation;
 
 /**
  * A classe <b>AuthenticationController</b> define os endpoints para fazer login na aplicação
@@ -36,6 +37,7 @@ public class AuthenticationController {
 	@Autowired
 	private TokenService tokenService;
 
+	@Operation(summary = "Autenticação", description = "Autenticação por usuário e senha")
 	@PostMapping
 	public ResponseEntity<?> authenticate(@RequestBody @Valid LoginForm form) {
 		UsernamePasswordAuthenticationToken login = form.convert();

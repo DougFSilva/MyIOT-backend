@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.MyIot.dto.device.MeasuringDeviceDto;
 import br.com.MyIot.dto.device.MeasuringDeviceForm;
 import br.com.MyIot.service.MeasuringDeviceService;
+import io.swagger.v3.oas.annotations.Operation;
 
 /**
  * A classe <b>MeasuringDeviceController</b> define os endpoints nos quais os usuários poderão gerenciar os dispositivos do tipo
@@ -34,6 +35,7 @@ public class MeasuringDeviceController {
 	@Autowired
 	private MeasuringDeviceService service;
 	
+	@Operation(summary = "Criar dispositivo de medição", description = "Criar um dispositivo de medição no sistema")
 	@PostMapping
 	public ResponseEntity<String> create(@RequestBody MeasuringDeviceForm form) {
 		String createdDeviceId = service.create(form);
@@ -42,34 +44,42 @@ public class MeasuringDeviceController {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@Operation(summary = "Excluir dispositivo de medição", description = "Excluir um dispositivo de medição no sistema")
 	@DeleteMapping(value = "/id={id}")
 	public ResponseEntity<String> deleteById(@PathVariable String id) {
 		service.deleteById(id);
 		return ResponseEntity.ok().body("Device with id " + id + " deleted!");
 	}
 
+	@Operation(summary = "Excluir dispositivos de medição do usuário", description = "Excluir todos dispositivos de medição do usuário"
+			+ " no sistema")
 	@DeleteMapping(value = "/all")
 	public ResponseEntity<String> deleteAllByUserId() {
 		service.deleteAllByUser();
 		return ResponseEntity.ok().body("Devices Deleted!");
 	}
 
+	@Operation(summary = "Editar dispositivo de medição", description = "Editar um dispositivo de medição no sistema")
 	@PutMapping(value = "/id={id}")
 	public ResponseEntity<MeasuringDeviceDto> updateById(@PathVariable String id,
 			@RequestBody MeasuringDeviceForm form) {
 		return ResponseEntity.ok().body(service.updateById(id, form));
 	}
 	
+	@Operation(summary = "Buscar dispositivo de medição", description = "Buscar um dispositivo de medição no sistema")
 	@GetMapping(value = "/id={id}")
 	public ResponseEntity<MeasuringDeviceDto> findById(@PathVariable String id) {
 		return ResponseEntity.ok().body(service.findByIdDto(id));
 	}
 
+	@Operation(summary = "Buscar dispositivos de medição do usuário", description = "Buscar todos dispositivos de medição do usuário no sistema")
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<MeasuringDeviceDto>> findAllByUserId() {
 		return ResponseEntity.ok().body(service.findAllByUser());
 	}
 
+	@Operation(summary = "Buscar dispositivos de medição", description = "Buscar todos dispositivos de medição no sistema. OBS.: Permitido somente "
+			+ "para usuários ADMIN")
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<MeasuringDeviceDto>> findAll() {

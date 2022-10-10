@@ -17,6 +17,7 @@ import br.com.MyIot.dto.user.UserDto;
 import br.com.MyIot.dto.user.UserForm;
 import br.com.MyIot.dto.user.UserUpdatePasswordForm;
 import br.com.MyIot.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 
 /**
  * A classe <b>UserController</b> define os endpoints nos quais os usuários poderão gerenciar a própria conta
@@ -31,6 +32,7 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
+	@Operation(summary = "Criar usuário", description = "Criar um usuário no sistema")
 	@PostMapping
 	ResponseEntity<String> create(@RequestBody UserForm form){
 		String createdUserId = service.create(form);
@@ -38,22 +40,26 @@ public class UserController {
 		return ResponseEntity.created(uri).body("thanks for using our system!");
 	}
 	
+	@Operation(summary = "Excluir usuário", description = "Excluir usuário no sistema")
 	@DeleteMapping
 	ResponseEntity<String> delete(){
 		service.delete();
 		return ResponseEntity.ok().body("User deleted, goodbye!");
 	}
 	
+	@Operation(summary = "Atualizar usuário", description = "Atualizar usuário no sistema")
 	@PutMapping
 	ResponseEntity<UserDto> update(@RequestBody UserForm form){
 		return ResponseEntity.ok().body(service.update(form));
 	}
 	
+	@Operation(summary = "Atualizar password", description = "Atualizar password do usuário no sistema")
 	@PutMapping(value = "/password")
 	ResponseEntity<UserDto> updatePasword(@RequestBody UserUpdatePasswordForm form){
 		return ResponseEntity.ok().body(service.updatePasswordById(form));
 	}
 	
+	@Operation(summary = "Buscar usuário", description = "Buscar detalhes do usuário no sistema")
 	@GetMapping
 	ResponseEntity<UserDto> findUser(){
 		return ResponseEntity.ok().body(service.findByIdDto());

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.MyIot.dto.device.DiscreteDeviceDto;
 import br.com.MyIot.dto.device.DiscreteDeviceForm;
 import br.com.MyIot.service.DiscreteDeviceService;
+import io.swagger.v3.oas.annotations.Operation;
 
 /**
  * A classe <b>DiscreteDeviceController</b> define os endpoints nos quais os usuários poderão gerenciar os dispositivos do tipo
@@ -34,6 +35,7 @@ public class DiscreteDeviceController {
 	@Autowired
 	private DiscreteDeviceService service;
 	
+	@Operation(summary = "Criar dispositivo de sinal discreto", description = "Criar um dispositivo de sinal discreto no sistema")
 	@PostMapping
 	public ResponseEntity<String> create(@RequestBody DiscreteDeviceForm form) {
 		String createdDeviceId = service.create(form);
@@ -42,34 +44,43 @@ public class DiscreteDeviceController {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@Operation(summary = "Excluir dispositivo de sinal discreto", description = "Excluir um dispositivo de sinal discreto no sistema")
 	@DeleteMapping(value = "/id={id}")
 	public ResponseEntity<String> deleteById(@PathVariable String id) {
 		service.deleteById(id);
 		return ResponseEntity.ok().body("Device with id " + id + " deleted!");
 	}
 
+	@Operation(summary = "Excluir dispositivos de sinal discreto do usuário", description = "Excluir todos dispositivos de sinal discreto "
+			+ "do usuário no sistema")
 	@DeleteMapping(value = "/all")
 	public ResponseEntity<String> deleteAllByUser() {
 		service.deleteAllByUser();
 		return ResponseEntity.ok().body("Devices deleted!");
 	}
 
+	@Operation(summary = "Editar dispositivo de sinal discreto", description = "Editar um dispositivo de sinal discreto no sistema")
 	@PutMapping(value = "/id={id}")
 	public ResponseEntity<DiscreteDeviceDto> updateById(@PathVariable String id,
 			@RequestBody DiscreteDeviceForm form) {
 		return ResponseEntity.ok().body(service.updateById(id, form));
 	}
 	
+	@Operation(summary = "Buscar dispositivo de sinal discreto", description = "Buscar um dispositivo de sinal discreto no sistema")
 	@GetMapping(value = "/id={id}")
 	public ResponseEntity<DiscreteDeviceDto> findById(@PathVariable String id) {
 		return ResponseEntity.ok().body(service.findByIdDto(id));
 	}
 
+	@Operation(summary = "Buscar dispositivos de sinal discreto do usuário", description = "Buscar todos dispositivos de sinal discreto"
+			+ "do usuário no sistema")
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<DiscreteDeviceDto>> findAllByUser() {
 		return ResponseEntity.ok().body(service.findAllByUser());
 	}
 
+	@Operation(summary = "Buscar dispositivos de sinal discreto", description = "Buscar todos dispositivos de sinal discreto no sistema. OBS.: "
+			+ "Permitido somente para usuário ADMIN")
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<DiscreteDeviceDto>> findAll() {
