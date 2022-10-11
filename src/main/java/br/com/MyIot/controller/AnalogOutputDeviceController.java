@@ -65,6 +65,13 @@ public class AnalogOutputDeviceController {
 			@RequestBody AnalogOutputDeviceForm form) {
 		return ResponseEntity.ok().body(service.updateById(id, form));
 	}
+	
+	@Operation(summary = "Publicar output no Broker", description = "Publicar valor inteiro de output no Broker Mosquitto")
+	@PostMapping(value = "/id={id}/output={output}")
+	public ResponseEntity<Void> publishOutputOnBrokerMqtt(@PathVariable String id, @PathVariable Integer output){
+		service.publishOnBrokerMqtt(id, output);
+		return ResponseEntity.ok().build();
+	}
 
 	@Operation(summary = "Buscar dispositivo de controle analógico", description = "Buscar um dispositivo de controle analógico no sistema")
 	@GetMapping(value = "/id={id}")

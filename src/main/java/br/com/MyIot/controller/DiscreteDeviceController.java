@@ -66,7 +66,8 @@ public class DiscreteDeviceController {
 		return ResponseEntity.ok().body(service.updateById(id, form));
 	}
 	
-	@PutMapping(value = "/id={id}/status={status}")
+	@Operation(summary = "Publicar status no Broker", description = "Publicar valor booleano de status no Broker Mosquitto")
+	@PostMapping(value = "/id={id}/status={status}")
 	public ResponseEntity<Void> publishStatusOnBrokerMqtt(@PathVariable String id, @PathVariable boolean status){
 		service.publishOnBrokerMqtt(id, status);
 		return ResponseEntity.ok().build();

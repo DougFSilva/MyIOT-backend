@@ -3,9 +3,12 @@ package br.com.MyIot.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.JsonObject;
 
 import br.com.MyIot.dto.device.AnalogOutputDeviceDto;
 import br.com.MyIot.dto.device.AnalogOutputDeviceForm;
@@ -18,6 +21,8 @@ import br.com.MyIot.model.device.analogOutputDevice.AnalogOutputDeviceRepository
 import br.com.MyIot.model.user.User;
 import br.com.MyIot.model.user.UserRepository;
 import br.com.MyIot.mqtt.MqttDeviceRoleService;
+import br.com.MyIot.mqtt.MqttSystemClientPublisher;
+import br.com.MyIot.mqtt.MqttTopic;
 
 /**
  * A classe <b>AnalogOutputDeviceService</b> é uma classe service responsável pelo gerenciamento de dispositivos do tipo 
@@ -43,6 +48,9 @@ public class AnalogOutputDeviceService {
 	
 	@Autowired
 	private WebSocketMessager messager;
+	
+	@Autowired
+	private MqttSystemClientPublisher publisher;
 	
 	public String create(AnalogOutputDeviceForm form) {
 		User autenticatedUser = getAuthenticatedUser();
@@ -109,6 +117,15 @@ public class AnalogOutputDeviceService {
 	
 	public List<AnalogOutputDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new AnalogOutputDeviceDto(device)).toList();
+	}
+	
+	public void publishOnBrokerMqtt(String deviceId, Integer output) {
+		String topic = MqttTopic.getDeviceTopic(AnalogOutputDevice.class, deviceId);
+		JsonObject json = new JsonObject();
+		json.addProperty("output", output);;
+		MqttMessage message = new MqttMessage();
+		message.setPayload(json.toString().getBytes());
+		publisher.publish(topic, message);
 	}
 	
 	private User getAuthenticatedUser() {
