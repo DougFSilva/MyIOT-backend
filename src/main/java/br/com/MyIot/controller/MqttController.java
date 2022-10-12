@@ -56,92 +56,92 @@ public class MqttController {
 
 	@Operation(summary = "Criar client Mosquitto", description = "Criar client Mosquitto no sistema. OBS.: Somente usuários ADMIN")
 	@PostMapping(value = "/client/email={email}")
-	public ResponseEntity<String> createStandardClient(@PathVariable String email) {
+	public ResponseEntity<Void> createStandardClient(@PathVariable String email) {
 		User user = userService.findByEmail(email);
 		MqttStandardClient client = new MqttStandardClient(user);
 		clientService.create(client);
-		return ResponseEntity.ok().body("Created client " + client.getUsername());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Excluir client Mosquitto", description = "Excluir client Mosquitto no sistema. OBS.: Somente usuários ADMIN")
 	@DeleteMapping(value = "/client/email={email}")
-	public ResponseEntity<String> deleteStandardClient(@PathVariable String email) {
+	public ResponseEntity<Void> deleteStandardClient(@PathVariable String email) {
 		User user = userService.findByEmail(email);
 		MqttStandardClient client = new MqttStandardClient(user);
 		clientService.delete(client);
-		return ResponseEntity.ok().body("Deleted client " + client.getUsername());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Habilitar client Mosquitto", description = "Habilitar client Mosquitto no sistema. OBS.: Somente usuários ADMIN")
 	@PutMapping(value = "/client/enable/email={email}")
-	public ResponseEntity<String> enableStandardClient(@PathVariable String email) {
+	public ResponseEntity<Void> enableStandardClient(@PathVariable String email) {
 		User user = userService.findByEmail(email);
 		MqttStandardClient client = new MqttStandardClient(user);
 		clientService.enable(client);
-		return ResponseEntity.ok().body("Enabled client " + client.getUsername());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Desabilitar client Mosquitto", description = "Desabilitar client Mosquitto no sistema. OBS.: Somente usuários ADMIN")
 	@PutMapping(value = "/client/disable/email={email}")
-	public ResponseEntity<String> disableStandardClient(@PathVariable String email) {
+	public ResponseEntity<Void> disableStandardClient(@PathVariable String email) {
 		User user = userService.findByEmail(email);
 		MqttStandardClient client = new MqttStandardClient(user);
 		clientService.disable(client);
-		return ResponseEntity.ok().body("Disabled client " + client.getUsername());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Criar role Mosquitto para dispositivo de comando analógico", description = "Criar role Mosquitto no sistema para "
 			+ "dispositivo de comando analógico. OBS.: Somente usuários ADMIN")
 	@PostMapping(value = "/role/analog-output-device/device-id={deviceId}")
-	public ResponseEntity<String> createRoleByAnalogOutputDevice(@PathVariable String deviceId) {
+	public ResponseEntity<Void> createRoleByAnalogOutputDevice(@PathVariable String deviceId) {
 		AnalogOutputDevice device = analogOutputDeviceService.findById(deviceId);
 		roleService.create(device);
-		return ResponseEntity.ok().body("Created role for device " + device.getName());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Deletar role Mosquitto para dispositivo de comando analógico", description = "Deletar role Mosquitto no sistema para "
 			+ "dispositivo de comando analógico. OBS.: Somente usuários ADMIN")
 	@DeleteMapping(value = "/role/analog-output-device/device-id={deviceId}")
-	public ResponseEntity<String> deleteRoleByAnalogOutputDevice(@PathVariable String deviceId) {
+	public ResponseEntity<Void> deleteRoleByAnalogOutputDevice(@PathVariable String deviceId) {
 		AnalogOutputDevice device = analogOutputDeviceService.findById(deviceId);
 		roleService.delete(device);
-		return ResponseEntity.ok().body("Deleted role for device " + device.getName());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Criar role Mosquitto para dispositivo de sinal discreto", description = "Criar role Mosquitto no sistema para "
 			+ "dispositivo de sinal discreto. OBS.: Somente usuários ADMIN")
 	@PostMapping(value = "/role/discrete-device/device-id={deviceId}")
-	public ResponseEntity<String> createRoleByDiscreteDevice(@PathVariable String deviceId) {
+	public ResponseEntity<Void> createRoleByDiscreteDevice(@PathVariable String deviceId) {
 		DiscreteDevice device = discreteDeviceService.findById(deviceId);
 		roleService.create(device);
-		return ResponseEntity.ok().body("Created role for device " + device.getName());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Deletar role Mosquitto para dispositivo de sinal discreto", description = "Deletar role Mosquitto no sistema para "
 			+ "dispositivo de sinal discreto. OBS.: Somente usuários ADMIN")
 	@DeleteMapping(value = "/role/discrete-device/device-id={deviceId}")
-	public ResponseEntity<String> deleteRoleByDiscreteDevice(@PathVariable String deviceId) {
+	public ResponseEntity<Void> deleteRoleByDiscreteDevice(@PathVariable String deviceId) {
 		DiscreteDevice device = discreteDeviceService.findById(deviceId);
 		roleService.delete(device);
-		return ResponseEntity.ok().body("Deleted role for device " + device.getName());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Criar role Mosquitto para dispositivo de medição", description = "Criar role Mosquitto no sistema para "
 			+ "dispositivo de medição. OBS.: Somente usuários ADMIN")
 	@PostMapping(value = "/role/measuring-device/device-id={deviceId}")
-	public ResponseEntity<String> createRoleBymeasuringDevice(@PathVariable String deviceId) {
+	public ResponseEntity<Void> createRoleBymeasuringDevice(@PathVariable String deviceId) {
 		MeasuringDevice device = measuringDeviceService.findById(deviceId);
 		roleService.create(device);
-		return ResponseEntity.ok().body("Created role for device " + device.getName());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "deletar role Mosquitto para dispositivo de medição", description = "Deletar role Mosquitto no sistema para "
 			+ "dispositivo de medição. OBS.: Somente usuários ADMIN")
 	@DeleteMapping(value = "/role/measuring-device/device-id={deviceId}")
-	public ResponseEntity<String> deleteRoleByMeasuringDevice(@PathVariable String deviceId) {
+	public ResponseEntity<Void> deleteRoleByMeasuringDevice(@PathVariable String deviceId) {
 		MeasuringDevice device = measuringDeviceService.findById(deviceId);
 		roleService.delete(device);
-		return ResponseEntity.ok().body("Deleted role for device " + device.getName());
+		return ResponseEntity.ok().build();
 	}
 
 }

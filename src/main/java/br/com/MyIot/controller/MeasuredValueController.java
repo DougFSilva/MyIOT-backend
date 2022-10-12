@@ -36,7 +36,7 @@ public class MeasuredValueController {
 
 	@Operation(summary = "Criar valor de medição", description = "Criar valor de medição para um dispositivo de medição no sistema")
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody MeasuredValueForm form) {
+	public ResponseEntity<Void> create(@RequestBody MeasuredValueForm form) {
 		String createValueId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createValueId)
 				.toUri();
@@ -45,25 +45,24 @@ public class MeasuredValueController {
 
 	@Operation(summary = "Excluir valor de medição", description = "Excluir valor de medição para um dispositivo de medição no sistema")
 	@DeleteMapping(value = "/device-id={deviceId}/id={id}")
-	public ResponseEntity<String> deleteById(@PathVariable String deviceId, @PathVariable String id) {
+	public ResponseEntity<Void> deleteById(@PathVariable String deviceId, @PathVariable String id) {
 		service.deleteById(deviceId, id);
-		return ResponseEntity.ok().body("Deleted measured value with id " + id);
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Excluir valores de medição", description = "Excluir todos valores de medição de um dispositivo de medição no sistema")
 	@DeleteMapping(value = "/device-id={deviceId}")
-	public ResponseEntity<String> deleteAllByDeviceId(@PathVariable String deviceId) {
+	public ResponseEntity<Void> deleteAllByDeviceId(@PathVariable String deviceId) {
 		service.deleteAllByDevice(deviceId);
-		return ResponseEntity.ok().body("Deleted measured values from device with id " + deviceId);
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Excluir valores de medição por período", description = "Excluir valores de medição de um dispositivo de medição "
 			+ "por um período de tempo especificado")
 	@DeleteMapping(value = "/device-id={deviceId}/time-range")
-	public ResponseEntity<String> deleteByTimeRange(@PathVariable String deviceId, @RequestBody DateFilter filter) {
+	public ResponseEntity<Void> deleteByTimeRange(@PathVariable String deviceId, @RequestBody DateFilter filter) {
 		service.deleteByTimeRange(deviceId, filter.getInitialDateTime(), filter.getFinalDateTime());
-		return ResponseEntity.ok().body(
-				"Deleted measured values between " + filter.getInitialDateTime() + " and " + filter.getFinalDateTime());
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Buscar valores de medição", description = "Buscar valores de medição de um dispositivo de medição no sistema")

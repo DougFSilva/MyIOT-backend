@@ -34,17 +34,17 @@ public class UserController {
 
 	@Operation(summary = "Criar usuário", description = "Criar um usuário no sistema")
 	@PostMapping
-	ResponseEntity<String> create(@RequestBody UserForm form){
+	ResponseEntity<Void> create(@RequestBody UserForm form){
 		String createdUserId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createdUserId).toUri();
-		return ResponseEntity.created(uri).body("thanks for using our system!");
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@Operation(summary = "Excluir usuário", description = "Excluir usuário no sistema")
 	@DeleteMapping
-	ResponseEntity<String> delete(){
+	ResponseEntity<Void> delete(){
 		service.delete();
-		return ResponseEntity.ok().body("User deleted, goodbye!");
+		return ResponseEntity.ok().build();
 	}
 	
 	@Operation(summary = "Atualizar usuário", description = "Atualizar usuário no sistema")

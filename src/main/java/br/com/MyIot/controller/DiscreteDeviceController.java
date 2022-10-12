@@ -37,7 +37,7 @@ public class DiscreteDeviceController {
 	
 	@Operation(summary = "Criar dispositivo de sinal discreto", description = "Criar um dispositivo de sinal discreto no sistema")
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody DiscreteDeviceForm form) {
+	public ResponseEntity<Void> create(@RequestBody DiscreteDeviceForm form) {
 		String createdDeviceId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createdDeviceId)
 				.toUri();
@@ -46,17 +46,17 @@ public class DiscreteDeviceController {
 
 	@Operation(summary = "Excluir dispositivo de sinal discreto", description = "Excluir um dispositivo de sinal discreto no sistema")
 	@DeleteMapping(value = "/id={id}")
-	public ResponseEntity<String> deleteById(@PathVariable String id) {
+	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		service.deleteById(id);
-		return ResponseEntity.ok().body("Device with id " + id + " deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Excluir dispositivos de sinal discreto do usuário", description = "Excluir todos dispositivos de sinal discreto "
 			+ "do usuário no sistema")
 	@DeleteMapping(value = "/all")
-	public ResponseEntity<String> deleteAllByUser() {
+	public ResponseEntity<Void> deleteAllByUser() {
 		service.deleteAllByUser();
-		return ResponseEntity.ok().body("Devices deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Editar dispositivo de sinal discreto", description = "Editar um dispositivo de sinal discreto no sistema")

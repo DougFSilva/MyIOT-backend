@@ -38,7 +38,7 @@ public class AnalogOutputDeviceController {
 
 	@Operation(summary = "Criar dispositivo de controle analógico", description = "Criar um dispositivo de controle analógico no sistema")
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody AnalogOutputDeviceForm form) {
+	public ResponseEntity<Void> create(@RequestBody AnalogOutputDeviceForm form) {
 		String createdDeviceId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createdDeviceId)
 				.toUri();
@@ -47,16 +47,16 @@ public class AnalogOutputDeviceController {
 
 	@Operation(summary = "Excluir dispositivo de controle analógico", description = "Excluir um dispositivo de controle analógico no sistema")
 	@DeleteMapping(value = "/id={id}")
-	public ResponseEntity<String> deleteById(@PathVariable String id) {
+	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		service.deleteById(id);
-		return ResponseEntity.ok().body("Device with id " + id + " deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Excluir dispositivos do usuários", description = "Excluir todos os dispositivos do usuário no sistema")
 	@DeleteMapping(value = "/all")
-	public ResponseEntity<String> deleteAllByUser() {
+	public ResponseEntity<Void> deleteAllByUser() {
 		service.deleteAllByUser();
-		return ResponseEntity.ok().body("Devices deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Editar dispositivo de controle analógico", description = "Editar um dispositivo de controle analógico no sistema")

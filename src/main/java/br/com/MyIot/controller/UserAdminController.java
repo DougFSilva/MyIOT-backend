@@ -35,9 +35,9 @@ public class UserAdminController {
 
 	@Operation(summary = "Excluir usuário", description = "Excluir usuário no sistema")
 	@DeleteMapping(value = "/id={id}")
-	public ResponseEntity<String> delete(@PathVariable String id) {
+	public ResponseEntity<Void> delete(@PathVariable String id) {
 		service.deleteById(id);
-		return ResponseEntity.ok().body("User with id " + id + " deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Atualizar usuário", description = "Atualizar usuário no sistema")

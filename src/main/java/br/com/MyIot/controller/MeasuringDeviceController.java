@@ -37,7 +37,7 @@ public class MeasuringDeviceController {
 	
 	@Operation(summary = "Criar dispositivo de medição", description = "Criar um dispositivo de medição no sistema")
 	@PostMapping
-	public ResponseEntity<String> create(@RequestBody MeasuringDeviceForm form) {
+	public ResponseEntity<Void> create(@RequestBody MeasuringDeviceForm form) {
 		String createdDeviceId = service.create(form);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id={id}").buildAndExpand(createdDeviceId)
 				.toUri();
@@ -46,17 +46,17 @@ public class MeasuringDeviceController {
 
 	@Operation(summary = "Excluir dispositivo de medição", description = "Excluir um dispositivo de medição no sistema")
 	@DeleteMapping(value = "/id={id}")
-	public ResponseEntity<String> deleteById(@PathVariable String id) {
+	public ResponseEntity<Void> deleteById(@PathVariable String id) {
 		service.deleteById(id);
-		return ResponseEntity.ok().body("Device with id " + id + " deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Excluir dispositivos de medição do usuário", description = "Excluir todos dispositivos de medição do usuário"
 			+ " no sistema")
 	@DeleteMapping(value = "/all")
-	public ResponseEntity<String> deleteAllByUserId() {
+	public ResponseEntity<Void> deleteAllByUser() {
 		service.deleteAllByUser();
-		return ResponseEntity.ok().body("Devices Deleted!");
+		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Editar dispositivo de medição", description = "Editar um dispositivo de medição no sistema")
@@ -74,7 +74,7 @@ public class MeasuringDeviceController {
 
 	@Operation(summary = "Buscar dispositivos de medição do usuário", description = "Buscar todos dispositivos de medição do usuário no sistema")
 	@GetMapping(value = "/all")
-	public ResponseEntity<List<MeasuringDeviceDto>> findAllByUserId() {
+	public ResponseEntity<List<MeasuringDeviceDto>> findAllByUser() {
 		return ResponseEntity.ok().body(service.findAllByUser());
 	}
 
