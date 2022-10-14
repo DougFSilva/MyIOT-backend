@@ -30,7 +30,7 @@ public class WebSocketMessager {
 	 */
 	public void sendMessage(MeasuredValue measuredValue) {
 		String username = measuredValue.getDevice().getUser().getUsername();
-		messagingTemplate.convertAndSendToUser(username, "/queue/message/" + measuredValue.getDevice().getId(), 
+		messagingTemplate.convertAndSendToUser(username, "/queue/message/measuring-device", 
 				new MeasuredValueDto(measuredValue));
 	}
 	
@@ -41,7 +41,7 @@ public class WebSocketMessager {
 	 */
 	public void sendMessage(AnalogOutputDevice device) {
 		String username = device.getUser().getUsername();
-		messagingTemplate.convertAndSendToUser(username, "/queue/message/" + device.getId(), new AnalogOutputDeviceDto(device));
+		messagingTemplate.convertAndSendToUser(username, "/queue/message/analog-output-device", new AnalogOutputDeviceDto(device));
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class WebSocketMessager {
 	 */
 	public void sendMessage(DiscreteDevice device) {
 		String username = device.getUser().getUsername();
-		messagingTemplate.convertAndSendToUser(username, "/queue/message/" + device.getId(), new DiscreteDeviceDto(device));
+		messagingTemplate.convertAndSendToUser(username, "/queue/message/discrete-device", new DiscreteDeviceDto(device));
 	}
 	
 }

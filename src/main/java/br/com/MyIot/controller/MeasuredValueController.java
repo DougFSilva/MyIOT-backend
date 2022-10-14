@@ -21,8 +21,9 @@ import br.com.MyIot.service.MeasuredValueService;
 import io.swagger.v3.oas.annotations.Operation;
 
 /**
- * A classe <b>MeasuredValueController</b> define os endpoints nos quais os usuários poderão gerenciar os valores de medição
- * do tipo <b>MeasuredValue</b>
+ * A classe <b>MeasuredValueController</b> define os endpoints nos quais os
+ * usuários poderão gerenciar os valores de medição do tipo <b>MeasuredValue</b>
+ * 
  * @author Douglas Ferreira da Silva
  * @since Out 2022
  * @version 1.0
@@ -73,10 +74,15 @@ public class MeasuredValueController {
 
 	@Operation(summary = "buscar valores de medição por período", description = "Buscar valores de medição de um dispositivo de medição"
 			+ "por um período de tempo especificado")
-	@GetMapping(value = "/device-id={deviceId}/time-range")
-	public ResponseEntity<List<MeasuredValueDto>> findByTimeRange(@PathVariable String deviceId,
-			@RequestBody DateFilter filter) {
+	@GetMapping(value = "/device-id={deviceId}/date={initialDate}-{finalDate}/time={initialTime}-{finalTime}")
+	public ResponseEntity<List<MeasuredValueDto>> findByTimeRange(
+			@PathVariable String deviceId,
+			@PathVariable String initialDate,
+			@PathVariable String finalDate, 
+			@PathVariable String initialTime,
+			@PathVariable String finalTime) {
+		DateFilter filter = new DateFilter(initialDate, finalDate, initialTime, finalTime);
 		return ResponseEntity.ok()
-				.body(service.findAllByTimeRange(deviceId, filter.getInitialDateTime(), filter.getFinalDateTime()));		
+				.body(service.findAllByTimeRange(deviceId, filter.getInitialDateTime(), filter.getFinalDateTime()));
 	}
 }
