@@ -60,8 +60,14 @@ public class MeasuredValueController {
 
 	@Operation(summary = "Excluir valores de medição por período", description = "Excluir valores de medição de um dispositivo de medição "
 			+ "por um período de tempo especificado")
-	@DeleteMapping(value = "/device-id={deviceId}/time-range")
-	public ResponseEntity<Void> deleteByTimeRange(@PathVariable String deviceId, @RequestBody DateFilter filter) {
+	@DeleteMapping(value = "/device-id={deviceId}/date={initialDate}-{finalDate}/time={initialTime}-{finalTime}")
+	public ResponseEntity<Void> deleteByTimeRange(
+			@PathVariable String deviceId,
+			@PathVariable String initialDate,
+			@PathVariable String finalDate, 
+			@PathVariable String initialTime,
+			@PathVariable String finalTime) {
+		DateFilter filter = new DateFilter(initialDate, finalDate, initialTime, finalTime);
 		service.deleteByTimeRange(deviceId, filter.getInitialDateTime(), filter.getFinalDateTime());
 		return ResponseEntity.ok().build();
 	}
