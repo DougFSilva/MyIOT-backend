@@ -1,17 +1,22 @@
 package br.com.MyIot.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import br.com.MyIot.dto.device.MeasuredValueDto;
 import br.com.MyIot.dto.device.MeasuringDeviceDto;
 import br.com.MyIot.dto.device.MeasuringDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
 import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UserNotApprovedException;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValue;
+import br.com.MyIot.model.device.MeasuringDevice.MeasuredValueRepository;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevicePerUser;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuringDeviceRepository;
@@ -34,6 +39,9 @@ public class MeasuringDeviceService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private MeasuredValueRepository measuredValueReporsitory;
 
 	@Autowired
 	private MqttDeviceRoleService mqttDeviceRoleService;
@@ -77,7 +85,12 @@ public class MeasuringDeviceService {
 	}
 
 	public MeasuringDeviceDto findByIdDto(String id) {
-		return new MeasuringDeviceDto(findById(id));
+		MeasuringDevice device = findById(id);
+		List<MeasuredValue> measuredValues = measuredValueReporsitory.findAllByDevice(device);
+		List<MeasuredValueDto> measuredValuesDto = measuredValues.stream()
+				.map(measuredValue -> new MeasuredValueDto(measuredValue))
+				.toList();
+		return new MeasuringDeviceDto(device, measuredValuesDto);
 	}
 
 	public MeasuringDevice findById(String id) {
@@ -91,7 +104,16 @@ public class MeasuringDeviceService {
 
 	public List<MeasuringDeviceDto> findAllByUser() {
 		User user = getAuthenticatedUser();
-		return repository.findAllByUser(user).stream().map(device -> new MeasuringDeviceDto(device)).toList();
+		List<MeasuringDeviceDto> devicesDto = new ArrayList<>();
+		List<MeasuringDevice> devices = repository.findAllByUser(user);
+		Map<MeasuringDevice, List<MeasuredValue>> map = measuredValueReporsitory.findAllByDevices(devices);
+		map.forEach((device, measuredValues) -> {
+			List<MeasuredValueDto> measuredValuesDto = measuredValues.stream()
+							.map(measuredValue -> new MeasuredValueDto(measuredValue))
+							.toList();
+			devicesDto.add(new MeasuringDeviceDto(device, measuredValuesDto));
+		});
+		return devicesDto;
 	}
 
 	public List<MeasuringDeviceDto> findAll() {

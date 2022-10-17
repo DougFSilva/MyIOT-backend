@@ -2,6 +2,7 @@ package br.com.MyIot.model.device.MeasuringDevice;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 /**
  * A interface <b>MeasuredValueRepository</b> define os métodos que a classe responsável pela persistência dos valores medidos deve implementar
  * @author Douglas Ferreira da Silva
@@ -19,6 +20,8 @@ public interface MeasuredValueRepository {
 	void deleteByTimeRange(MeasuringDevice device, LocalDateTime initialDateTime, LocalDateTime finalDateTime);
 
 	List<MeasuredValue> findAllByDevice(MeasuringDevice device);
+	
+	Map<MeasuringDevice, List<MeasuredValue>> findAllByDevices(List<MeasuringDevice> devices);
 
 	List<MeasuredValue> findAllByTimeRange(MeasuringDevice device, LocalDateTime initialDateTime, LocalDateTime finalDateTime);
 

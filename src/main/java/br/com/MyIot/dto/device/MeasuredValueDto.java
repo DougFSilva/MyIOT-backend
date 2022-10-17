@@ -38,4 +38,12 @@ public class MeasuredValueDto {
 		return timestamp;
 	}
 
+	@Override
+	public String toString() {
+		return "MeasuredValueDto [id=" + id + ", deviceId=" + deviceId + ", values=" + values + ", timestamp="
+				+ timestamp + "]";
+	}
+	
+	
+
 }

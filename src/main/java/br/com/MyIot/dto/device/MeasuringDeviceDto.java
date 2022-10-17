@@ -9,6 +9,8 @@ public class MeasuringDeviceDto extends DeviceDto {
 
 	private List<String> keyNames = new ArrayList<>();
 
+	private List<MeasuredValueDto> values = new ArrayList<>();
+
 	public MeasuringDeviceDto() {
 		super();
 	}
@@ -22,9 +24,19 @@ public class MeasuringDeviceDto extends DeviceDto {
 		super(device.getId(), device.getUser().getId(), device.getLocation(), device.getName());
 		this.keyNames = device.getKeyNames();
 	}
+	
+	public MeasuringDeviceDto(MeasuringDevice device, List<MeasuredValueDto> values) {
+		super(device.getId(), device.getUser().getId(), device.getLocation(), device.getName());
+		this.keyNames = device.getKeyNames();
+		this.values = values;
+	}
 
 	public List<String> getKeyNames() {
 		return keyNames;
+	}
+
+	public List<MeasuredValueDto> getValues() {
+		return values;
 	}
 
 }

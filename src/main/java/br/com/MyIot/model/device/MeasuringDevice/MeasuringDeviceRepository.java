@@ -23,7 +23,7 @@ public interface MeasuringDeviceRepository {
 	void deleteAllByUser(User user);
 
 	Optional<MeasuringDevice> findById(String id);
-
+	
 	List<MeasuringDevice> findAllByUser(User user);
 
 	List<MeasuringDevice> findAll();
