@@ -9,11 +9,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 
-import br.com.MyIot.exception.MqttMessageConverterFailureException;
-
 /**
- * A classe <b>MqttMessageConverter</b> é responsável por converter um objeto do tipo <b>MqttMessage</b> em 
- * <b>AnalogOutputDeviceMqttMessage</b>, <b>DiscreteDeviceMqttMessage</b> ou  <b>MeasuredValueMqttMessage</b>
+ * A classe <b>MqttMessageConverter</b> é responsável por converter um objeto do
+ * tipo <b>MqttMessage</b> em <b>AnalogOutputDeviceMqttMessage</b>,
+ * <b>DiscreteDeviceMqttMessage</b> ou <b>MeasuredValueMqttMessage</b>
+ * 
  * @author Douglas Ferreira da Silva
  * @since Out 2022
  * @version 1.0
@@ -21,7 +21,9 @@ import br.com.MyIot.exception.MqttMessageConverterFailureException;
 public class MqttMessageConverter {
 
 	/**
-	 * Método que recebe um objeto do tipo <b>MqttMessage</b> e converte para um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 * Método que recebe um objeto do tipo <b>MqttMessage</b> e converte para um
+	 * objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 * 
 	 * @param message
 	 * @return Retorna um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
 	 */
@@ -29,14 +31,16 @@ public class MqttMessageConverter {
 		try {
 			Gson gson = new Gson();
 			return gson.fromJson(message.toString(), AnalogOutputDeviceMqttMessage.class);
-		} catch (Exception e) {
-			throw new MqttMessageConverterFailureException(e.getMessage(), e.getCause());
+		} catch (RuntimeException e) {
+			return null;
 		}
 
 	}
 
 	/**
-	 * Método que recebe um objeto do tipo <b>MqttMessage</b> e converte para um objeto do tipo <b>DiscreteDeviceMqttMessage</b>
+	 * Método que recebe um objeto do tipo <b>MqttMessage</b> e converte para um
+	 * objeto do tipo <b>DiscreteDeviceMqttMessage</b>
+	 * 
 	 * @param message
 	 * @return Retorna um objeto do tipo <b>DiscreteDeviceMqttMessage</b>
 	 */
@@ -44,14 +48,16 @@ public class MqttMessageConverter {
 		try {
 			Gson gson = new Gson();
 			return gson.fromJson(message.toString(), DiscreteDeviceMqttMessage.class);
-		} catch (Exception e) {
-			throw new MqttMessageConverterFailureException(e.getMessage(), e.getCause());
+		} catch (RuntimeException e) {
+			return null;
 		}
 
 	}
 
 	/**
-	 * Método que recebe um objeto do tipo <b>MeasuredValueMqttMessage</b> e converte para um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 * Método que recebe um objeto do tipo <b>MeasuredValueMqttMessage</b> e
+	 * converte para um objeto do tipo <b>AnalogOutputDeviceMqttMessage</b>
+	 * 
 	 * @param message
 	 * @return Retorna um objeto do tipo <b>MeasuredValueMqttMessage</b>
 	 */
@@ -64,7 +70,7 @@ public class MqttMessageConverter {
 					.create();
 			return gson.fromJson(message.toString(), MeasuredValueMqttMessage.class);
 		} catch (Exception e) {
-			throw new MqttMessageConverterFailureException(e.getMessage(), e.getCause());
+			return null;
 		}
 
 	}

@@ -63,7 +63,7 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 	public MqttSystemClientSubscriber connect() {
 		mqttClientService.create(username, password);
 		try {
-			MqttClient client = new MqttClient(uri, "", new MqttDefaultFilePersistence());
+			MqttClient client = new MqttClient(uri, "f551c60c-c82e-4a8a-b591-b24e3ddf5235", new MqttDefaultFilePersistence());
 			MqttConnectOptions options = new MqttConnectOptions();
 			options.setUserName(username);
 			options.setPassword(password.toCharArray());
@@ -120,9 +120,11 @@ public class MqttSystemClientSubscriber implements MqttCallback {
 		if (deviceType.equals(MeasuringDevice.class.getSimpleName())) {
 				MqttMessageConverter converter = new MqttMessageConverter();
 				MeasuredValueMqttMessage convertedMessage = converter.toMeasuredValueMqttMessage(message);
-				MeasuredValueForm form = new MeasuredValueForm(deviceId, convertedMessage.getValues(),
-						convertedMessage.getTimestamp());
-				measuredValueService.mqttCreate(form);
+				if(convertedMessage != null) {
+					MeasuredValueForm form = new MeasuredValueForm(deviceId, convertedMessage.getValues(),
+							convertedMessage.getTimestamp());
+					measuredValueService.mqttCreate(form);
+				}
 		}
 	}
 

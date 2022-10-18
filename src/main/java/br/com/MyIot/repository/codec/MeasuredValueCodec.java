@@ -17,8 +17,10 @@ import org.bson.codecs.EncoderContext;
 import br.com.MyIot.repository.entity.MongoMeasuredValueEntity;
 
 /**
- * A classe <b>MeasuredValueCodec</b> define um codec para um objeto do tipo <b>MeasuredValue</b> ser codificado e 
- * decodificado quando se relaciona com o banco de dados MongoDb
+ * A classe <b>MeasuredValueCodec</b> define um codec para um objeto do tipo
+ * <b>MeasuredValue</b> ser codificado e decodificado quando se relaciona com o
+ * banco de dados MongoDb
+ * 
  * @since Out 2022
  * @version 1.0
  */
@@ -33,10 +35,11 @@ public class MeasuredValueCodec implements CollectibleCodec<MongoMeasuredValueEn
 	@Override
 	public void encode(BsonWriter writer, MongoMeasuredValueEntity entity, EncoderContext encoderContext) {
 		Document document = new Document();
-		document.append("deviceId", entity.getDeviceId()).append("timestamp", entity.getTimeStamp()).append("values",
+		document.append("deviceId", entity.getDeviceId())
+				.append("timestamp", entity.getTimeStamp())
+				.append("values",
 				entity.getValues());
 		codec.encode(writer, document, encoderContext);
-
 	}
 
 	@Override
@@ -49,8 +52,8 @@ public class MeasuredValueCodec implements CollectibleCodec<MongoMeasuredValueEn
 		Document document = codec.decode(reader, decoderContext);
 		Instant instant = document.getDate("timestamp").toInstant();
 		LocalDateTime timestamp = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"));
-		MongoMeasuredValueEntity entity = new MongoMeasuredValueEntity(document.getObjectId("_id"), document.getObjectId("deviceId"),
-				document.getList("values", Double.class), timestamp);
+		MongoMeasuredValueEntity entity = new MongoMeasuredValueEntity(document.getObjectId("_id"),
+				document.getObjectId("deviceId"), document.getList("values", Double.class), timestamp);
 		return entity;
 	}
 

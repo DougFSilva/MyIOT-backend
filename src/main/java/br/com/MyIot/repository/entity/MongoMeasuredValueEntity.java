@@ -6,13 +6,15 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
- * A classe <b>MongoMeasuredValueEntity</b> é uma entidade que representa um objeto do tipo <b>MongoMeasuredValue</b> para ser 
- * persistido no banco de dados mongoDb
+ * A classe <b>MongoMeasuredValueEntity</b> é uma entidade que representa um
+ * objeto do tipo <b>MongoMeasuredValue</b> para ser persistido no banco de
+ * dados mongoDb
+ * 
  * @since Out 2022
  * @version 1.0
  */
 public class MongoMeasuredValueEntity {
-	
+
 	private ObjectId id;
 
 	private ObjectId deviceId;
@@ -27,7 +29,7 @@ public class MongoMeasuredValueEntity {
 		this.values = values;
 		this.timeStamp = timeStamp;
 	}
-	
+
 	public MongoMeasuredValueEntity(ObjectId deviceId, List<Double> values, LocalDateTime timeStamp) {
 		this.deviceId = deviceId;
 		this.values = values;

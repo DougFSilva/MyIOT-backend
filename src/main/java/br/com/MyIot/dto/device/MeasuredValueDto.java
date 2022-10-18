@@ -43,7 +43,5 @@ public class MeasuredValueDto {
 		return "MeasuredValueDto [id=" + id + ", deviceId=" + deviceId + ", values=" + values + ", timestamp="
 				+ timestamp + "]";
 	}
-	
-	
 
 }

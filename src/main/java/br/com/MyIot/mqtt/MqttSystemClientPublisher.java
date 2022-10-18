@@ -24,7 +24,7 @@ public class MqttSystemClientPublisher {
 	
 	public void publish(String topic, MqttMessage message) {
 		try {
-			MqttClient client = new MqttClient(uri, "",  new MqttDefaultFilePersistence());
+			MqttClient client = new MqttClient(uri, "8f5c1dbd-d054-4576-bafb-f196b0cbc580",  new MqttDefaultFilePersistence());
 			MqttConnectOptions options = new MqttConnectOptions();
 			options.setUserName(username);
 			options.setPassword(password.toCharArray());
