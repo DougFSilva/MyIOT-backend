@@ -16,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.MyIot.dto.device.MeasuredValueDto;
 import br.com.MyIot.dto.device.MeasuredValueForm;
-import br.com.MyIot.model.device.DateFilter;
+import br.com.MyIot.model.device.MeasuringDevice.DateFilter;
 import br.com.MyIot.service.MeasuredValueService;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -60,7 +60,7 @@ public class MeasuredValueController {
 
 	@Operation(summary = "Excluir valores de medição por período", description = "Excluir valores de medição de um dispositivo de medição "
 			+ "por um período de tempo especificado")
-	@DeleteMapping(value = "/device-id={deviceId}/date={initialDate}-{finalDate}/time={initialTime}-{finalTime}")
+	@DeleteMapping(value = "/device-id={deviceId}/date={initialDate}to{finalDate}/time={initialTime}to{finalTime}")
 	public ResponseEntity<Void> deleteByTimeRange(
 			@PathVariable String deviceId,
 			@PathVariable String initialDate,
@@ -68,27 +68,28 @@ public class MeasuredValueController {
 			@PathVariable String initialTime,
 			@PathVariable String finalTime) {
 		DateFilter filter = new DateFilter(initialDate, finalDate, initialTime, finalTime);
-		service.deleteByTimeRange(deviceId, filter.getInitialDateTime(), filter.getFinalDateTime());
+		service.deleteByTimeRange(deviceId, filter);
 		return ResponseEntity.ok().build();
 	}
 
 	@Operation(summary = "Buscar valores de medição", description = "Buscar valores de medição de um dispositivo de medição no sistema")
-	@GetMapping(value = "/device-id={deviceId}")
-	public ResponseEntity<List<MeasuredValueDto>> findAllByDevice(@PathVariable String deviceId) {
-		return ResponseEntity.ok().body(service.findAllByDevice(deviceId));
+	@GetMapping(value = "/device-id={deviceId}/limit={limit}")
+	public ResponseEntity<List<MeasuredValueDto>> findAllByDevice(@PathVariable String deviceId, @PathVariable Integer limit) {
+		return ResponseEntity.ok().body(service.findAllByDevice(deviceId, limit));
 	}
 
 	@Operation(summary = "buscar valores de medição por período", description = "Buscar valores de medição de um dispositivo de medição"
 			+ "por um período de tempo especificado")
-	@GetMapping(value = "/device-id={deviceId}/date={initialDate}-{finalDate}/time={initialTime}-{finalTime}")
-	public ResponseEntity<List<MeasuredValueDto>> findByTimeRange(
+	@GetMapping(value = "/device-id={deviceId}/date={initialDate}to{finalDate}/time={initialTime}to{finalTime}/limit={limit}")
+	public ResponseEntity<List<MeasuredValueDto>> findAllByDeviceAndTimeRange(
 			@PathVariable String deviceId,
 			@PathVariable String initialDate,
 			@PathVariable String finalDate, 
 			@PathVariable String initialTime,
-			@PathVariable String finalTime) {
+			@PathVariable String finalTime,
+			@PathVariable Integer limit) {
 		DateFilter filter = new DateFilter(initialDate, finalDate, initialTime, finalTime);
 		return ResponseEntity.ok()
-				.body(service.findAllByTimeRange(deviceId, filter.getInitialDateTime(), filter.getFinalDateTime()));
+				.body(service.findAllByDeviceAndTimeRange(deviceId, filter, limit));
 	}
 }

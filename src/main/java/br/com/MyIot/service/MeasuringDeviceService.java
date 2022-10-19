@@ -15,6 +15,7 @@ import br.com.MyIot.dto.device.MeasuringDeviceForm;
 import br.com.MyIot.exception.ObjectNotFoundException;
 import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UserNotApprovedException;
+import br.com.MyIot.model.device.MeasuringDevice.DateFilter;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuredValue;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuredValueRepository;
 import br.com.MyIot.model.device.MeasuringDevice.MeasuringDevice;
@@ -55,7 +56,7 @@ public class MeasuringDeviceService {
 		if (!user.isApprovedRegistration()) {
 			throw new UserNotApprovedException("User " + user.getName() + " not approved!");
 		}
-		Integer numberOfDevices = findAllByUser().size();
+		Integer numberOfDevices = findAllByUser(20000).size();
 		devicePerUser.validate(user, numberOfDevices);
 		MeasuringDevice device = form.toDevice(user);
 		String createdDeviceId = repository.create(device);
@@ -84,9 +85,9 @@ public class MeasuringDeviceService {
 		return new MeasuringDeviceDto(repository.update(device));
 	}
 
-	public MeasuringDeviceDto findByIdDto(String id) {
+	public MeasuringDeviceDto findByIdDto(String id, Integer measurementLimit) {
 		MeasuringDevice device = findById(id);
-		List<MeasuredValue> measuredValues = measuredValueReporsitory.findAllByDevice(device);
+		List<MeasuredValue> measuredValues = measuredValueReporsitory.findAllByDevice(device, measurementLimit);
 		List<MeasuredValueDto> measuredValuesDto = measuredValues.stream()
 				.map(measuredValue -> new MeasuredValueDto(measuredValue))
 				.toList();
@@ -102,11 +103,11 @@ public class MeasuringDeviceService {
 				.orElseThrow(() -> new ObjectNotFoundException("Device with id " + id + " not found in database!"));
 	}
 
-	public List<MeasuringDeviceDto> findAllByUser() {
+	public List<MeasuringDeviceDto> findAllByUser(Integer measurementLimit) {
 		User user = getAuthenticatedUser();
 		List<MeasuringDeviceDto> devicesDto = new ArrayList<>();
 		List<MeasuringDevice> devices = repository.findAllByUser(user);
-		Map<MeasuringDevice, List<MeasuredValue>> map = measuredValueReporsitory.findAllByDevices(devices);
+		Map<MeasuringDevice, List<MeasuredValue>> map = measuredValueReporsitory.findAllByDevices(devices, measurementLimit);
 		map.forEach((device, measuredValues) -> {
 			List<MeasuredValueDto> measuredValuesDto = measuredValues.stream()
 							.map(measuredValue -> new MeasuredValueDto(measuredValue))
@@ -115,6 +116,21 @@ public class MeasuringDeviceService {
 		});
 		return devicesDto;
 	}
+	
+	public List<MeasuringDeviceDto> findAllByUserAndTimeRange(DateFilter filter,Integer measurementLimit) {
+		User user = getAuthenticatedUser();
+		List<MeasuringDeviceDto> devicesDto = new ArrayList<>();
+		List<MeasuringDevice> devices = repository.findAllByUser(user);
+		Map<MeasuringDevice, List<MeasuredValue>> map = measuredValueReporsitory.findAllByDevicesAndTimeRange(devices, filter, measurementLimit);
+		map.forEach((device, measuredValues) -> {
+			List<MeasuredValueDto> measuredValuesDto = measuredValues.stream()
+							.map(measuredValue -> new MeasuredValueDto(measuredValue))
+							.toList();
+			devicesDto.add(new MeasuringDeviceDto(device, measuredValuesDto));
+		});
+		return devicesDto;
+	} 
+
 
 	public List<MeasuringDeviceDto> findAll() {
 		return repository.findAll().stream().map(device -> new MeasuringDeviceDto(device)).toList();

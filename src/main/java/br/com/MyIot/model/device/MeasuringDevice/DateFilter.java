@@ -1,4 +1,4 @@
-package br.com.MyIot.model.device;
+package br.com.MyIot.model.device.MeasuringDevice;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,41 +21,25 @@ public class DateFilter {
 	public DateFilter(String initialDate, String finalDate, String initialTime, String finalTime) {
 		this.initialDate = LocalDate.parse(initialDate);
 		this.finalDate = LocalDate.parse(finalDate);
-		this.initialTime = LocalTime.parse(initialTime);
-		this.finalTime = LocalTime.parse(finalTime);
-	}
-
-	public DateFilter(String initialDate, String finalDate) {
-		this.initialDate = LocalDate.parse(initialDate);
-		this.finalDate = LocalDate.parse(finalDate);
-	}
-
-	public DateFilter(String date) {
-		this.initialDate = LocalDate.parse(date);
-	}
-
-	public DateFilter(String date, String initialTime, String finalTime) {
-		this.initialDate = LocalDate.parse(date);
-		this.finalDate = LocalDate.parse(date);
-		this.initialTime = LocalTime.parse(initialTime);
-		this.finalTime = LocalTime.parse(finalTime);
+		if(initialTime.equals("MIN")) {
+			this.initialTime = LocalTime.MIN;
+		}else {
+			this.initialTime = LocalTime.parse(initialTime);
+		}
+		if(finalTime.equals("MAX")) {
+			this.finalTime = LocalTime.MAX;
+		}else {
+			this.finalTime = LocalTime.parse(finalTime);
+		}
+		
 	}
 
 	public LocalDateTime getInitialDateTime() {
-		if (this.initialTime == null) {
-			return LocalDateTime.of(this.initialDate, LocalTime.MIN);
-		}
 		return LocalDateTime.of(initialDate, initialTime);
 
 	}
 
 	public LocalDateTime getFinalDateTime() {
-		if (this.finalDate == null) {
-			this.finalDate = this.initialDate;
-		}
-		if (this.finalTime == null) {
-			return LocalDateTime.of(finalDate, LocalTime.MAX);
-		}
 		return LocalDateTime.of(this.finalDate, this.finalTime);
 	}
 
