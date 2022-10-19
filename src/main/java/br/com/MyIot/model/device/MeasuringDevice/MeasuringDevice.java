@@ -42,5 +42,6 @@ public class MeasuringDevice extends Device {
 	public void setKeyNames(List<String> keyNames) {
 		this.keyNames = keyNames;
 	}
+	
 
 }

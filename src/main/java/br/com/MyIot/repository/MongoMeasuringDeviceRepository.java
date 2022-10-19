@@ -64,7 +64,8 @@ public class MongoMeasuringDeviceRepository implements MeasuringDeviceRepository
 		MongoMeasuringDeviceEntity entity = getCollection().findOneAndUpdate(
 				Filters.eq(new ObjectId(updatedDevice.getId())),
 				Updates.combine(Updates.set("location", updatedDevice.getLocation()), 
-								Updates.set("name", updatedDevice.getName())),
+								Updates.set("name", updatedDevice.getName()),
+								Updates.set("keyNames", updatedDevice.getKeyNames())),
 				new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
 		mongoConnection.close();
 		User user = findUser(entity.getUserId());

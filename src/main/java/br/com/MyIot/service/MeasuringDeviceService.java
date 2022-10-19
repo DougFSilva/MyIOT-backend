@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.MyIot.dto.device.MeasuredValueDto;
 import br.com.MyIot.dto.device.MeasuringDeviceDto;
 import br.com.MyIot.dto.device.MeasuringDeviceForm;
+import br.com.MyIot.exception.DataIntegratyViolationException;
 import br.com.MyIot.exception.ObjectNotFoundException;
 import br.com.MyIot.exception.OperationNotAllowedException;
 import br.com.MyIot.exception.UserNotApprovedException;
@@ -51,6 +52,9 @@ public class MeasuringDeviceService {
 	private MeasuringDevicePerUser devicePerUser;
 
 	public String create(MeasuringDeviceForm form) {
+		if(form.getKeyNames().size() > 4) {
+			throw new DataIntegratyViolationException("Maximum keyNames number is 4!");
+		}
 		User autenticatedUser = getAuthenticatedUser();
 		User user = userRepository.findById(autenticatedUser.getId()).get();
 		if (!user.isApprovedRegistration()) {
@@ -78,6 +82,9 @@ public class MeasuringDeviceService {
 	}
 
 	public MeasuringDeviceDto updateById(String id, MeasuringDeviceForm form) {
+		if(form.getKeyNames().size() > 4) {
+			throw new DataIntegratyViolationException("Maximum keyNames number is 4!");
+		}
 		MeasuringDevice device = findById(id);
 		device.setLocation(form.getLocation());
 		device.setName(form.getName());
