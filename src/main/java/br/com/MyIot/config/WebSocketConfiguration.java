@@ -27,8 +27,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 	
-	@Value("${websocket.allowedOrigin}")
-	private String webSocketOrigin;
+	@Value("${frontend.origin}")
+	private String origin;
 
 	/**
 	 * Método implementado da interface <b>WebSocketMessageBrokerConfigurer</b> que registra o endpoint da conexão websocket
@@ -36,7 +36,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 	 */
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/myiot-websocket").setAllowedOrigins(webSocketOrigin).withSockJS();
+		registry.addEndpoint("/myiot-websocket").setAllowedOrigins(origin).withSockJS();
 	}
 
 	/**

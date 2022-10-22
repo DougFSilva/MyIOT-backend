@@ -23,6 +23,14 @@ services:
       - /mosquitto/data
       - /mosquitto/log
   
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    networks:
+      - myiot-bridge
+    ports:
+      - 3000:80
+      
   backend:
     build: .
     container_name: backend
@@ -44,7 +52,8 @@ services:
                                     # geração da imagem do container mosquitto, encontrado na pasta "mosquitto"
       - MQTT_DYNSEC_PASSWORD=Dynsec@123 # Senha do usuário admin do dynamic security do broker mosquitto. Assim como o username, este deve
                                         # ser configurado também no Dockerfile da geração da imagem do container mosquitto, na pasta "mosquitto"
-      - JWT_SECRET=PalavraSecretaParaGeracaoDeJWTTOken # String secreta para geração do token JWT 
+      - JWT_SECRET=PalavraSecretaParaGeracaoDeJWTToken # String secreta para geração do token JWT 
+      - FRONTEND_ORIGIN=http://localhost:4200
     depends_on:
       - mosquitto
       - mongodb
