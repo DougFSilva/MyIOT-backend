@@ -53,7 +53,7 @@ services:
       - MQTT_DYNSEC_PASSWORD=Dynsec@123 # Senha do usuário admin do dynamic security do broker mosquitto. Assim como o username, este deve
                                         # ser configurado também no Dockerfile da geração da imagem do container mosquitto, na pasta "mosquitto"
       - JWT_SECRET=PalavraSecretaParaGeracaoDeJWTToken # String secreta para geração do token JWT 
-      - FRONTEND_ORIGIN=http://localhost:4200
+      - FRONTEND_ORIGIN=http://localhost:3000
     depends_on:
       - mosquitto
       - mongodb
