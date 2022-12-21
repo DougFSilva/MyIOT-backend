@@ -1,5 +1,19 @@
 # MyIOT-backend
-O projeto é uma plataforma na qual o usuário cria uma conta, se conecta e cadastra dispositivos que poderão enviar dados para um Broker MQTT e receber comandos do tipo analógico e digital. A API então será responsável por receber os dados do Broker e por salvar as informações no banco de dados, e também oferecer uma interface para envio de comandos para os dispositivos. 
+O projeto é uma plataforma para controle e medição de dispositivios IOT, onde o usuário logado pode cadastrar dispositivos privados do tipo analógico, digital ou dispositivo de medição. Para os dispositivos do tipo analógico ou discreto é possível enviar comandos e receber a atualização do estado ou valor em tempo real via websocket, persistindo-os no banco de dados. Para os dispositivos de medição os valores medidos são persistidos e enviados também via websocket para visualização em tempo real por meio de gráfico e tabela.
+
+Na pasta frontend se encontra uma aplicação de frontend desenvolvida com Angular. Veja a seguir algumas imagens:
+
+Exemplo de tela de um dispositivos de medição ![tela de dispositivo de medição](./images/exemplo-tela-medicao.jpg)
+
+Exemplo de tela de cadastro de um dispositivo de medição ![tela e cadastro de um dispositivo de medição](./images/exemplo-tela-medicao-cadastro.jpg)
+
+Exemplo de tela de um dispositivo discreto ![tela de dispositivo discreto](./images/exemplo-tela-discreto.jpg)
+
+Exemplo de tela de um dispositivo analógico ![tela de dispositivo analógico](./images/exemplo-tela-analogico.jpg)
+
+Também foi criada uma biblioteca em C++ para facilitar a utilização com arduino, ESP8266 ou ESP32. Acesse [Biblioteca para arduino/ESP](https://github.com/DougFSilva/MyIOT-arduino-esp)
+
+Repositório para o código do frontend em Angular. Acesse [MyIOT-frontend](https://github.com/DougFSilva/MyIOT-frontend)
 
 # 🚀 Começando
 Essas instruções permitiram que você instale e utilize a API em sua máquina desejada
@@ -34,6 +48,8 @@ Com o terminal aberto na pasta raiz do projeto execute o Docker Compose.
 ```
 docker compose up
 ```
+Concluída toda a instalação a aplicação ficará disponível no endereço e porta configurados do docker-compose.
+
 ## 🔧 **Entendendo e utilizando**
 
 ## 1. Veja a documentação
