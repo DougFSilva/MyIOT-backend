@@ -25,7 +25,7 @@ services:
   
   frontend:
     build: ./frontend
-    container_name: frontend
+    container_name: myiot-frontend
     networks:
       - myiot-bridge
     ports:
@@ -33,7 +33,7 @@ services:
       
   backend:
     build: .
-    container_name: backend
+    container_name: myiot-backend
     networks:
       - myiot-bridge
     ports:
